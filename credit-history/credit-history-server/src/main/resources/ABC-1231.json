@@ -1,0 +1,12 @@
+{
+  "passportNumber": "ABC-1231",
+  "hasLoan": true,
+  "historicalLoans": [
+    {
+      "loanPaid": true
+    },
+    {
+      "loanPaid": false
+    }
+  ]
+}
