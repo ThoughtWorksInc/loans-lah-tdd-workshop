@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  credit_history:
+    container_name: credit_history
+    build:
+      context: credit-history/credit-history-server
+    ports:
+    - "8080:8080"
+    command: java -jar credit-history.jar
