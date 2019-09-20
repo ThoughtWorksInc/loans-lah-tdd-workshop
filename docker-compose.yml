@@ -1,9 +1,15 @@
 version: '3.7'
 services:
-  credit_history:
-    container_name: credit_history
+  db:
+    container_name: postgres_lah
     build:
-      context: credit-history/credit-history-server
+      context: ./db
+    ports:
+    - "5432:5432"
+  credit_history:
+    container_name: credit_history_lah
+    build:
+      context: ./credit-history/credit-history-server
     ports:
     - "8080:8080"
     command: java -jar credit-history.jar
