@@ -1,0 +1,39 @@
+{
+  "name": "loans-lah-app",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "babel-node ./src/bin/www",
+    "test": "jest"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "morgan": "~1.9.1",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.19.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.6.1",
+    "@babel/preset-env": "^7.6.0",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
+    "sqlite3": "^4.1.0"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
+  }
+}
