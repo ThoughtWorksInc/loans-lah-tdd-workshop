@@ -1,9 +1,11 @@
-var express = require('express');
-var router = express.Router();
+import express from 'express'
+import User from '../models/user'
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+var router = express.Router()
+
+router.post('/', async (req, res, next) => {
+  await User.createUser(req.body.name, req.body.password)
+  res.json()
+})
 
 module.exports = router;

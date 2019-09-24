@@ -23,7 +23,8 @@
     "@babel/preset-env": "^7.6.0",
     "babel-jest": "^24.9.0",
     "jest": "^24.9.0",
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^4.1.0",
+    "supertest": "^4.0.2"
   },
   "babel": {
     "presets": [
