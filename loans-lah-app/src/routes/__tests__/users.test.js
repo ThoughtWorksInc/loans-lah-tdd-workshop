@@ -31,7 +31,37 @@ describe('request.agent(app)', () => {
       .expect(200)
       .expect('Content-Type', /json/)
 
-    const john = await User.findOne({name: 'john'})
+    const john = await User.findOne({where: {name: 'john'}})
     expect(john).toBeTruthy()
   });
+
+  describe('login', () => {
+    beforeEach(async () => {
+      await User.createUser("mary", "password1234")
+    })
+
+    it('responds 200 if login correct', async () => {
+      await supertest(app)
+      .post('/users/login')
+      .send({name: 'mary', password: 'password1234'})
+      .set('Accept', 'application/json')
+      .expect(200)
+    })
+
+    it('responds 401 if user not found', async () => {
+      await supertest(app)
+      .post('/users/login')
+      .send({name: 'bob', password: 'password1234'})
+      .set('Accept', 'application/json')
+      .expect(401)
+    })
+
+    it('responds 401 if user found but password wrong', async () => {
+      await supertest(app)
+      .post('/users/login')
+      .send({name: 'mary', password: 'had-a-little-lamb'})
+      .set('Accept', 'application/json')
+      .expect(401)
+    })
+  })
 })

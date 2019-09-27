@@ -8,4 +8,12 @@ router.post('/', async (req, res, next) => {
   res.json()
 })
 
+router.post('/login', async (req, res, next) => {
+  const user = await User.findOne({where: {name: req.body.name}})
+  if (!user) return res.status(401).send()
+  const passwordValid = await user.verifyPassword(req.body.password)
+  if (!passwordValid) return res.status(401).send()
+  res.json()
+})
+
 module.exports = router;
