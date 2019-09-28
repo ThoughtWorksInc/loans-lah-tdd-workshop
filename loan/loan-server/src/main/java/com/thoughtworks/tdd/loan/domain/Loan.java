@@ -11,26 +11,33 @@ public class Loan {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @Column
-  private Long account;
+  private String account;
   @Column
   private BigDecimal amount;
   @Column
   private LocalDate takenAt;
   @Column
   private int durationInDays;
+  @Column
+  private Integer interestRate;
 
   public Loan() {
   }
 
-  public Loan(Long account, BigDecimal amount, LocalDate takenAt, int durationInDays) {
+  public Loan(String account, BigDecimal amount, LocalDate takenAt, int durationInDays, int interestRate) {
     this.account = account;
     this.amount = amount;
     this.takenAt = takenAt;
     this.durationInDays = durationInDays;
+    this.interestRate = interestRate;
   }
 
   public Long getId() {
     return id;
+  }
+
+  public String getAccount() {
+    return account;
   }
 
   public BigDecimal getAmount() {
@@ -45,8 +52,8 @@ public class Loan {
     return durationInDays;
   }
 
-  public Long getAccount() {
-    return account;
+  public Integer getInterestRate() {
+    return interestRate;
   }
 
   @Override
@@ -55,6 +62,7 @@ public class Loan {
     if (o == null || getClass() != o.getClass()) return false;
     Loan loan = (Loan) o;
     return durationInDays == loan.durationInDays &&
+            Objects.equals(interestRate, loan.interestRate) &&
             Objects.equals(id, loan.id) &&
             Objects.equals(account, loan.account) &&
             Objects.equals(amount, loan.amount) &&
@@ -63,7 +71,7 @@ public class Loan {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, account, amount, takenAt, durationInDays);
+    return Objects.hash(id, account, amount, takenAt, durationInDays, interestRate);
   }
 
   @Override
@@ -74,6 +82,7 @@ public class Loan {
             ", amount=" + amount +
             ", takenAt=" + takenAt +
             ", durationInDays=" + durationInDays +
+            ", interestRate=" + interestRate +
             '}';
   }
 }
