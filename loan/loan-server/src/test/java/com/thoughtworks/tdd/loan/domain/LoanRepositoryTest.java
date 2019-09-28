@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 import static com.thoughtworks.tdd.loan.utils.Loans.loan;
@@ -18,6 +19,7 @@ class LoanRepositoryTest {
   @Autowired
   private LoanRepository loanRepository;
   private String account = uuid();
+  private String otherAccount = uuid();
 
   @Test
   void shouldPersistNewLoan() {
@@ -40,11 +42,40 @@ class LoanRepositoryTest {
   void shouldFindAllLoansAssignedToAccount() {
     Loan newLoan = loan(account);
     Loan anotherLoan = loan(account);
+    Loan someOtherLoan = loan(otherAccount);
     Loan newLoanSaved = loanRepository.save(newLoan);
     Loan anotherLoanSaved = loanRepository.save(anotherLoan);
+    loanRepository.save(someOtherLoan);
 
     List<Loan> loans = loanRepository.findAllByAccount(account);
 
     assertThat(loans).containsExactlyInAnyOrder(newLoanSaved, anotherLoanSaved);
+  }
+
+  @Test
+  void shouldNotFindLoanWhenIdIsNotAssignedToAccount() {
+    Loan newLoan = loan(account);
+    Loan anotherLoan = loan(otherAccount);
+    loanRepository.save(newLoan);
+    Loan anotherLoanSaved = loanRepository.save(anotherLoan);
+
+    Optional<Loan> optionalLoan = loanRepository.findByIdAndAccount(anotherLoanSaved.getId(), account);
+
+    assertThat(optionalLoan)
+            .isEmpty();
+  }
+
+  @Test
+  void shouldFindLoanByIdAndAccount() {
+    Loan newLoan = loan(account);
+    Loan anotherLoan = loan(account);
+    Loan newLoanSaved = loanRepository.save(newLoan);
+    loanRepository.save(anotherLoan);
+
+    Optional<Loan> optionalLoan = loanRepository.findByIdAndAccount(newLoanSaved.getId(), account);
+
+    assertThat(optionalLoan)
+            .isPresent()
+            .contains(newLoanSaved);
   }
 }

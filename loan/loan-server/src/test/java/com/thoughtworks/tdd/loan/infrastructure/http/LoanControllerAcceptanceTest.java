@@ -42,7 +42,7 @@ class LoanControllerAcceptanceTest {
             get(newLoanUrl).
     then().
           statusCode(200).
-          body("$[0].amount", equalTo("200")).
-          body("$[0].duration_in_days", equalTo(10));
+          body("amount", equalTo(200)).
+          body("interest_rate", equalTo(10));
   }
 }

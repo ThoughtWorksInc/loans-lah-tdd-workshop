@@ -24,14 +24,22 @@ public class LoanController {
   public ResponseEntity<LoanStatus> createNew(@PathVariable("accountId") String accountId,
                                               @RequestBody NewLoan newLoan) {
     var loan = new Loan(accountId, newLoan.getAmount(), LocalDate.now(), newLoan.getDurationInDays(), 10);
-    Loan saved = loanRepository.save(loan);
-    LoanStatus status = new LoanStatus("ok", format("/api/v1/accounts/%s/loans/%s", accountId, saved.getId()));
+    var saved = loanRepository.save(loan);
+    var status = new LoanStatus("ok", format("/api/v1/accounts/%s/loans/%s", accountId, saved.getId()));
     return accepted().body(status);
   }
 
   @GetMapping
   public ResponseEntity<List<Loan>> getAll(@PathVariable("accountId") String accountId) {
-    List<Loan> loans = loanRepository.findAllByAccount(accountId);
+    var loans = loanRepository.findAllByAccount(accountId);
     return ok(loans);
+  }
+
+  @GetMapping
+  @RequestMapping("/{loanId}")
+  public ResponseEntity<Loan> getLoan(@PathVariable("accountId") String accountId,
+                                      @PathVariable("loanId") Long loanId) {
+    var optionalLoan = loanRepository.findByIdAndAccount(loanId, accountId);
+    return optionalLoan.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
   }
 }

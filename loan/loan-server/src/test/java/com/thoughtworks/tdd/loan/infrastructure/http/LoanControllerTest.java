@@ -22,8 +22,7 @@ import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpStatus.ACCEPTED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -76,7 +75,7 @@ class LoanControllerTest {
             "/api/v1/accounts/{accountId}/loans/",
             POST,
             new HttpEntity<>(loanRequest, headers()),
-            Loan.class,
+            LoanStatus.class,
             account);
 
     ResponseEntity<List<Loan>> response = testRestTemplate.exchange(
@@ -91,6 +90,44 @@ class LoanControllerTest {
     assertThat(response.getBody()).hasOnlyOneElementSatisfying(loan -> {
       assertThat(loan).isEqualToIgnoringGivenFields(new Loan(account, BigDecimal.valueOf(200), LocalDate.now(), 10, 10), "id");
     });
+  }
+
+
+  @Test
+  void shouldReturnNotFoundWhenRequestedLoanCanNotBeFound() {
+    var nonExistingId = 0;
+    ResponseEntity<Loan> response = testRestTemplate.exchange(
+            "/api/v1/accounts/{account}/loans/{loanId}",
+            GET,
+            EMPTY,
+            Loan.class,
+            account,
+            nonExistingId);
+
+    assertThat(response.getStatusCode()).isEqualTo(NOT_FOUND);
+  }
+
+  @Test
+  void shouldReturnLoanByAccountAndLoanId() {
+    var loanRequest = "{\"amount\": \"200\", \"duration_in_days\": 10}";
+
+    ResponseEntity<LoanStatus> response = testRestTemplate.exchange(
+            "/api/v1/accounts/{accountId}/loans/",
+            POST,
+            new HttpEntity<>(loanRequest, headers()),
+            LoanStatus.class,
+            account);
+
+    assertThat(response.getStatusCode()).isEqualTo(ACCEPTED);
+    String url = response.getBody().getLocation().getUrl();
+
+    ResponseEntity<Loan> loanResponse = testRestTemplate.exchange(
+            url,
+            GET,
+            EMPTY,
+            Loan.class);
+
+    assertThat(loanResponse.getStatusCode()).isEqualTo(OK);
   }
 
   private static HttpHeaders headers() {

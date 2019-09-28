@@ -1,5 +1,7 @@
 package com.thoughtworks.tdd.loan.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,6 +21,7 @@ public class Loan {
   @Column
   private int durationInDays;
   @Column
+  @JsonProperty("interest_rate")
   private Integer interestRate;
 
   public Loan() {
