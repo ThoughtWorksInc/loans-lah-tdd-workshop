@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./mvnw clean package
+./gradlew clean build

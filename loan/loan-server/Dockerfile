@@ -1,7 +1,7 @@
 FROM openjdk:11-slim
 
 WORKDIR /app
-ADD target/loan-server-*.jar loan.jar
+ADD build/loan-server.jar loan.jar
 
 EXPOSE 8080
 
