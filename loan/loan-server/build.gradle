@@ -17,6 +17,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.flywaydb:flyway-core:5.2.2'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
 
     testImplementation 'com.h2database:h2:1.4.199'
     testImplementation 'io.rest-assured:rest-assured:4.1.1'

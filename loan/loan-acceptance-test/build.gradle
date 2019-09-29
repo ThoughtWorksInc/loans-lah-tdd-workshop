@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "com.avast.gradle.docker-compose" version "0.9.1"
+}
+
+dependencies {
+    testImplementation project(':loan-server').sourceSets.test.output
+    testImplementation 'io.rest-assured:rest-assured:4.1.1'
+    testImplementation 'io.rest-assured:rest-assured-all:4.1.1'
+    testImplementation 'org.hamcrest:hamcrest:2.1'
+}
+
+test {
+    useJUnitPlatform {
+        excludeTags("acceptance")
+    }
+}
+
+task acceptanceTest(type: Test) {}
+
+acceptanceTest {
+    useJUnitPlatform {
+        includeTags("acceptance")
+    }
+}
+
+dockerCompose {
+    captureContainersOutput = false
+    forceRecreate = true
+    removeImages = "Local"
+//    stopContainers = false
+//    removeContainers = false
+}
+
+dockerCompose.isRequiredBy(acceptanceTest)
+
+test.doFirst {
+    dockerCompose.exposeAsEnvironment(test)
+    dockerCompose.exposeAsSystemProperties(test)
+}

@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  db:
+    build:
+      context: ../../db
+    ports:
+    - "5432:5432"
+  loan:
+    build:
+      context: ../loan-server
+    ports:
+    - "8080:8080"
+    command: java -jar loan.jar
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/loans
+    depends_on:
+    - "db"

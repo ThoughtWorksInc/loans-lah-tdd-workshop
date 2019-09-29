@@ -1,1 +1,2 @@
 include 'loan-server'
+include 'loan-acceptance-test'
