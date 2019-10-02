@@ -27,6 +27,11 @@ public class Loan {
   public Loan() {
   }
 
+  public Loan(Long id, String account, BigDecimal amount, LocalDate takenAt, int durationInDays, int interestRate) {
+    this(account, amount, takenAt, durationInDays, interestRate);
+    this.id = id;
+  }
+
   public Loan(String account, BigDecimal amount, LocalDate takenAt, int durationInDays, int interestRate) {
     this.account = account;
     this.amount = amount;
