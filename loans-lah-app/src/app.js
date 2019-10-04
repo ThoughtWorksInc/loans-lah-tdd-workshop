@@ -1,19 +1,18 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import express from 'express'
+import logger from 'morgan'
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+import indexRouter from './routes/index'
+import userRouter from './routes/users'
 
-var app = express();
+import jwt from 'express-jwt'
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+export default app = express()
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 
-module.exports = app;
+app.use(jwt({ secret: process.env.JWT_SECRET}).unless({path: ['/users'], method: "POST"}))
+
+app.use('/', indexRouter)
+app.use('/users', userRouter)

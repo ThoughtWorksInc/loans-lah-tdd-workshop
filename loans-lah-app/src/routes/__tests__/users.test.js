@@ -3,10 +3,13 @@ import express from 'express'
 import users from '../users'
 import Sequelize from 'sequelize'
 import jwt from 'jsonwebtoken'
+
+import expressJwt from 'express-jwt'
 import User, { _init as userInit } from '../../models/user'
 
 describe('request.agent(app)', () => {
   let sequelize
+  let app
   beforeEach(async () => {
     sequelize = new Sequelize({
       dialect: 'sqlite',
@@ -16,17 +19,18 @@ describe('request.agent(app)', () => {
     userInit(sequelize)
     await User.sync()
     process.env.JWT_SECRET = 'secret'
+
+    app = express()
+    app.use(express.json())
+    app.use(expressJwt({ secret: process.env.JWT_SECRET}).unless({path: ['/users'], method: "POST"}))
+    app.use('/users', users)
   })
   afterEach(async () => {
     await sequelize.close()
     delete(process.env.JWT_SECRET)
   })
 
-  const app = express()
-  app.use(express.json())
-  app.use('/users', users)
-
-  it('responds with json', async () => {
+  it('creates user', async () => {
     await supertest(app)
       .post('/users')
       .send({name: 'john', password: 'password1'})
@@ -37,6 +41,79 @@ describe('request.agent(app)', () => {
     const john = await User.findOne({where: {name: 'john'}})
     expect(john).toBeTruthy()
   });
+
+  describe('get user', () => {
+    let user
+    beforeEach(async () => {
+      user = await User.createUser("mary", "password1234")
+    })
+    it('gets the details for user', async () => {
+      const token = jwt.sign(
+        {},
+        process.env.JWT_SECRET,
+        {
+          subject: user.id.toString()
+        }
+      )
+      await supertest(app)
+      .get(`/users/${user.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .expect(res => expect(res.body.id).toBe(user.id))
+      .expect(res => expect(res.body.name).toBe(user.name))
+      .expect(res => expect(res.body.password).toBeUndefined())
+    })
+
+    it('returns 401 for bad token', async () => {
+      const token = jwt.sign(
+        {
+          sub: user.id
+        },
+        "wrong secret"
+      )
+      await supertest(app)
+      .get(`/users/${user.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json')
+      .expect(401)
+    })
+
+    it('returns 401 for missing token', async () => {
+      await supertest(app)
+      .get(`/users/${user.id}`)
+      .set('Accept', 'application/json')
+      .expect(401)
+    })
+
+    it('returns 404 for id mismatch', async () => {
+      const token = jwt.sign(
+        {
+          sub: (user.id + 1)
+        },
+        process.env.JWT_SECRET
+      )
+      await supertest(app)
+      .get(`/users/${user.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json')
+      .expect(404)
+    })
+
+    it('returns 404 for missing user', async () => {
+      const token = jwt.sign(
+        {
+          sub: (user.id + 1)
+        },
+        process.env.JWT_SECRET
+      )
+      await supertest(app)
+      .get(`/users/${user.id + 1}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json')
+      .expect(404)
+    })
+  })
 
   describe('login', () => {
     let user
@@ -63,21 +140,13 @@ describe('request.agent(app)', () => {
       })
     })
 
-    describe('jwt atribute verification', async () => {
-      it('returns a jwt containing the username if login correct', async () => {
-        await supertest(app)
-        .post('/users/login')
-        .send({name: user.name, password: 'password1234'})
-        .set('Accept', 'application/json')
-        .expect(res => expect(jwt.decode(res.body.jwt).name).toBe(user.name))
-      })
-
+    describe('jwt atribute verification', () => {
       it('returns a jwt containing the users id as subject if login correct', async () => {
         await supertest(app)
         .post('/users/login')
         .send({name: user.name, password: 'password1234'})
         .set('Accept', 'application/json')
-        .expect(res => expect(jwt.decode(res.body.jwt).sub).toBe(user.id))
+        .expect(res => expect(jwt.decode(res.body.jwt).sub).toBe(user.id.toString()))
       })
     })
 
