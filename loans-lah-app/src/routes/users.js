@@ -28,11 +28,8 @@ router.post('/login', async (req, res) => {
   res.json({jwt: token})
 })
 
-router.get('/:userId', async (req, res) => {
-  if (req.user.sub !== req.params.userId) {
-    return res.status(404).send()
-  }
-  const user = await User.findByPk(req.params.userId)
+router.get('/', async (req, res) => {
+  const user = await User.findByPk(req.user.sub)
   if (!user) {
     return res.status(404).send()
   }

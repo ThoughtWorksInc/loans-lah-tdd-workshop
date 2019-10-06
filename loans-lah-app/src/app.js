@@ -12,7 +12,13 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use(jwt({ secret: process.env.JWT_SECRET}).unless({path: ['/users'], method: "POST"}))
+app.use(
+  jwt({ secret: process.env.JWT_SECRET})
+  .unless({ path: [
+    { url: '/users', methods: ['POST'] },
+    { url: '/users/login', methods: ['POST'] }
+  ]})
+)
 
 app.use('/', indexRouter)
 app.use('/users', userRouter)

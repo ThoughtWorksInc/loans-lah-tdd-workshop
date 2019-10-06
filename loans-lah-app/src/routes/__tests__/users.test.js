@@ -22,7 +22,10 @@ describe('request.agent(app)', () => {
 
     app = express()
     app.use(express.json())
-    app.use(expressJwt({ secret: process.env.JWT_SECRET}).unless({path: ['/users'], method: "POST"}))
+    app.use(expressJwt({ secret: process.env.JWT_SECRET}).unless({path: [
+      { url: '/users', methods: ['POST'] },
+      { url: '/users/login', methods: ['POST'] }
+    ]}))
     app.use('/users', users)
   })
   afterEach(async () => {
@@ -56,7 +59,7 @@ describe('request.agent(app)', () => {
         }
       )
       await supertest(app)
-      .get(`/users/${user.id}`)
+      .get('/users')
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json')
       .expect(200)
@@ -66,38 +69,24 @@ describe('request.agent(app)', () => {
     })
 
     it('returns 401 for bad token', async () => {
-      const token = jwt.sign(
+      const badToken = jwt.sign(
         {
           sub: user.id
         },
         "wrong secret"
       )
       await supertest(app)
-      .get(`/users/${user.id}`)
-      .set('Authorization', `Bearer ${token}`)
+      .get('/users')
+      .set('Authorization', `Bearer ${badToken}`)
       .set('Accept', 'application/json')
       .expect(401)
     })
 
     it('returns 401 for missing token', async () => {
       await supertest(app)
-      .get(`/users/${user.id}`)
+      .get('/users')
       .set('Accept', 'application/json')
       .expect(401)
-    })
-
-    it('returns 404 for id mismatch', async () => {
-      const token = jwt.sign(
-        {
-          sub: (user.id + 1)
-        },
-        process.env.JWT_SECRET
-      )
-      await supertest(app)
-      .get(`/users/${user.id}`)
-      .set('Authorization', `Bearer ${token}`)
-      .set('Accept', 'application/json')
-      .expect(404)
     })
 
     it('returns 404 for missing user', async () => {
@@ -108,7 +97,7 @@ describe('request.agent(app)', () => {
         process.env.JWT_SECRET
       )
       await supertest(app)
-      .get(`/users/${user.id + 1}`)
+      .get('/users')
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json')
       .expect(404)
