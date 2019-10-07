@@ -6,7 +6,9 @@ import userRouter from './routes/users'
 
 import jwt from 'express-jwt'
 
-export default app = express()
+const app = express()
+
+export default app
 
 app.use(logger('dev'))
 app.use(express.json())
