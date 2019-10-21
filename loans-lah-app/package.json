@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "babel-node ./src/bin/www",
+    "start": "babel-node ./src/app",
+    "prod": "node ./bin/app",
+    "build": "babel src --out-dir build",
     "test": "jest"
   },
   "dependencies": {
