@@ -11,12 +11,12 @@ function Header() {
             <Navbar.Toggle aria-controls="basic-navbar-nav" key="1" />,
             <Navbar.Collapse id="basic-navbar-nav" key="2">
                 <Nav className="mr-auto">
-                    <Nav.Link href="#loans/new">Apply Now!</Nav.Link>
-                    <Nav.Link href="#loans">My Loans</Nav.Link>
-                    <Nav.Link href="#applications">My Applications</Nav.Link>
+                    <Nav.Link href="/loans/new">Apply Now!</Nav.Link>
+                    <Nav.Link href="/loans">My Loans</Nav.Link>
+                    <Nav.Link href="/applications">My Applications</Nav.Link>
                 </Nav>
                 <Navbar.Text>
-                    <a className="btn btn-outline-warning" href="#logout">Log Out</a>
+                    <a className="btn btn-outline-warning" href="/logout">Log Out</a>
                 </Navbar.Text>
             </Navbar.Collapse>
         ];
