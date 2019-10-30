@@ -19,7 +19,7 @@ const MainContainer = styled(Container)`
 `;
 
 function App() {
-    const user = GUEST_USER;
+    const user = sessionStorage.getItem("loggedInUser") ? new User(sessionStorage.getItem("loggedInUser"), true) : GUEST_USER;
 
     return (
         <Router>

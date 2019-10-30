@@ -24,6 +24,7 @@ function LoginForm() {
     let usernameInput = "";
     let passwordInput = "";
     function handleLogin(event) {
+        event.preventDefault();
         let username = usernameInput.value;
         let password = passwordInput.value;
         return API.login(username, password)
@@ -36,8 +37,8 @@ function LoginForm() {
 
     return (
         <div>
+            {renderRedirect()}
             <Form onSubmit={handleLogin}>
-                {renderRedirect()}
                 <Form.Group controlId="formUsername">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" placeholder="Username" ref={(input) => { usernameInput = input; }}/>
