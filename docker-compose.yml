@@ -20,6 +20,8 @@ services:
     ports:
     - "8010:8080"
     command: java -jar loan.jar
+    environment:
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_lah:5432/loans
   app_db:
     container_name: app_db_lah
     build:
