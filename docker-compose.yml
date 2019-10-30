@@ -31,7 +31,7 @@ services:
     build:
       context: ./loans-lah-app
     ports:
-      - "3000:3000"
+      - "8910:3000"
     environment:
       - DB_NAME=loans
       - DB_USER=loan
