@@ -2,12 +2,12 @@ import React from 'react';
 import {Form, Button} from 'react-bootstrap';
 import styled from 'styled-components';
 
-const RegisterLink = styled.a `
+const LoginLink = styled.a `
     display: inline-block;
     padding: .375rem 0;
 `;
 
-function LoginForm() {
+function RegisterForm() {
     return (
         <div>
             <Form>
@@ -21,12 +21,12 @@ function LoginForm() {
                     <Form.Control type="password" placeholder="Password" />
                 </Form.Group>
                 <Button variant="primary" type="submit">
-                    Log In
+                    Register
                 </Button>
             </Form>
-            <RegisterLink href="/register">Register now!</RegisterLink>
+            <LoginLink href="/login">Already had an account? Login here!</LoginLink>
         </div>
     )
 }
 
-export default LoginForm;
+export default RegisterForm;
