@@ -8,26 +8,22 @@ import java.time.LocalDate;
 public class Loans {
 
   public static Loan loan() {
-    return oneMonthLoan(Stubs.uuid(), BigDecimal.TEN);
+    return loan(Stubs.uuid());
   }
 
   public static Loan loan(String account) {
-    return oneMonthLoan(account, BigDecimal.TEN);
+    return new Loan(account, BigDecimal.TEN, LocalDate.now(), 10, 10);
   }
 
-  public static Loan oneMonthLoan(String account, BigDecimal amount) {
-    return loanStartingToday(account, amount, 10);
+  public static Loan loanStartingTodayWith10PercentInterest(BigDecimal amount, int durationInDays) {
+    return new Loan("some account", amount, LocalDate.now(), durationInDays, 10);
   }
 
-  public static Loan loanStartingToday(String account, BigDecimal amount, int durationInDays) {
-    return new Loan(account, amount, LocalDate.now(), durationInDays, 10);
+  public static Loan twoMonthsLoanAt10PercentInterest(BigDecimal amount) {
+    return loanStartingTodayWith10PercentInterest(amount, 60);
   }
 
-  public static Loan twoMonthsLoan(String account, BigDecimal amount) {
-    return loanStartingToday(account, amount, 60);
-  }
-
-  public static Loan loanWithDuration(String account, BigDecimal amount, int durationInDays) {
-    return loanStartingToday(account, amount, durationInDays);
+  public static Loan loanAt10PercentInterestWithDuration(BigDecimal amount, int durationInDays) {
+    return loanStartingTodayWith10PercentInterest(amount, durationInDays);
   }
 }
