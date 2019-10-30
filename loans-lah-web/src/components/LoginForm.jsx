@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {Form, Button} from 'react-bootstrap';
 import {Redirect} from "react-router-dom";
 import styled from 'styled-components';
 import API from '../services/api';
+import UserContext from "../UserContext";
+import User from "../models/User";
 
 const RegisterLink = styled.a `
     display: inline-block;
@@ -10,7 +12,8 @@ const RegisterLink = styled.a `
 `;
 
 function LoginForm() {
-    const [loggedIn, setLoggedIn] = useState(false);
+    const user = useContext(UserContext);
+    const [loggedIn, setLoggedIn] = useState(user.loggedIn);
 
     function renderRedirect() {
         if (loggedIn) {
@@ -19,12 +22,15 @@ function LoginForm() {
         return '';
     }
 
-    let username = "";
-    let password = "";
+    let usernameInput = "";
+    let passwordInput = "";
     function handleLogin(event) {
+        let username = usernameInput.value;
+        let password = passwordInput.value;
         return API.login(username, password)
             .then(jwt => {
                 sessionStorage.setItem("jwt", jwt);
+                sessionStorage.setItem("loggedInUser", username);
                 setLoggedIn(true);
             });
     }
@@ -35,12 +41,12 @@ function LoginForm() {
                 {renderRedirect()}
                 <Form.Group controlId="formUsername">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Username" ref={(input) => { username = input; }}/>
+                    <Form.Control type="text" placeholder="Username" ref={(input) => { usernameInput = input; }}/>
                 </Form.Group>
 
                 <Form.Group controlId="formPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" ref={(input) => { password = input; }}/>
+                    <Form.Control type="password" placeholder="Password" ref={(input) => { passwordInput = input; }}/>
                 </Form.Group>
                 <Button variant="primary" type="submit">
                     Log In
@@ -48,7 +54,7 @@ function LoginForm() {
             </Form>
             <RegisterLink href="/register">Register now!</RegisterLink>
         </div>
-    )
+    );
 }
 
 export default LoginForm;

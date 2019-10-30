@@ -6,20 +6,24 @@ import LoginForm from "../LoginForm";
 import API from "../../services/api";
 import {createMemoryHistory} from "history";
 import {Router, Switch, Route} from "react-router-dom";
+import {UserProvider} from "../../UserContext";
+import User, {GUEST_USER} from "../../models/User";
 
-function renderWithMockLocalStorage() {
+function renderWithMockLocalStorage({ user }) {
     const history = createMemoryHistory({ initialEntries: ["/login"] });
     return render(
         <Router history={history}>
             <LocalStorageMock>
-                <Switch>
-                    <Route path="/login">
-                        <LoginForm />
-                    </Route>
-                    <Route path="/">
-                        <span>User is logged in!</span>
-                    </Route>
-                </Switch>
+                <UserProvider value={ user }>
+                    <Switch>
+                        <Route path="/login">
+                            <LoginForm />
+                        </Route>
+                        <Route path="/">
+                            <span>User is logged in!</span>
+                        </Route>
+                    </Switch>
+                </UserProvider>
             </LocalStorageMock>
         </Router>
     );
@@ -33,12 +37,17 @@ describe('when user logs in with valid username and password', function () {
         const expectedJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";
         API.login.mockResolvedValueOnce(expectedJwt);
 
-        let wrapper = renderWithMockLocalStorage();
+        let wrapper = renderWithMockLocalStorage({user: GUEST_USER });
         fireEvent.change(wrapper.getByLabelText("Username"), { target: { value: 'johndoe' } });
         fireEvent.change(wrapper.getByLabelText("Password"), { target: { value: 'foobar' } });
         fireEvent.click(wrapper.getByText('Log In'));
 
         return wait(() => expect(sessionStorage.getItem("jwt")).toEqual(expectedJwt))
-            .then(() => expect(wrapper.container.innerHTML).toMatch('User is logged in!'));
+            .then(() => {
+                expect(API.login.mock.calls[0][0]).toEqual("johndoe");
+                expect(API.login.mock.calls[0][1]).toEqual("foobar");
+                expect(wrapper.container.innerHTML).toMatch('User is logged in!');
+                expect(sessionStorage.getItem("loggedInUser")).toEqual("johndoe");
+            });
     });
 });
