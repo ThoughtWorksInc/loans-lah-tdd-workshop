@@ -40,6 +40,22 @@ const API = {
         }).then(checkStatus)
             .then(data => true);
     },
+    applyNewLoan({ amount, duration }) {
+        let payload = {
+            amount,
+            durationInDays: duration
+        };
+
+        return fetch('/api/loans', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        }).then(checkStatus)
+            .then(data => true);
+    }
 };
 
 export default API;
