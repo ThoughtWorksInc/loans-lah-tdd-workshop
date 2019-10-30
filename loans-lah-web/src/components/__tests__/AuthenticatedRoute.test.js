@@ -15,7 +15,10 @@ function renderWithRouterAndUser({user = {}, route = "/"}) {
                     <Route path="/login">
                         <span>User is not logged in!</span>
                     </Route>
-                    <AuthenticatedRoute path="/authenticated" render={(props)=>(<span>User is logged in!</span>)}>
+                    <AuthenticatedRoute path="/authenticated-with-render" render={(props)=>(<span>User is logged in!</span>)}>
+                    </AuthenticatedRoute>
+                    <AuthenticatedRoute path="/authenticated-with-children">
+                        <span>User is logged in!</span>
                     </AuthenticatedRoute>
                 </Switch>
             </UserProvider>
@@ -24,14 +27,24 @@ function renderWithRouterAndUser({user = {}, route = "/"}) {
 
 describe('when user is not logged in', function () {
     it('redirects to /login', function () {
-        const { container } = renderWithRouterAndUser({user: GUEST_USER, route: "/authenticated"});
+        const { container } = renderWithRouterAndUser({user: GUEST_USER, route: "/authenticated-with-render"});
+        expect(container.innerHTML).toMatch('User is not logged in!');
+    });
+
+    it('redirects to /login', function () {
+        const { container } = renderWithRouterAndUser({user: GUEST_USER, route: "/authenticated-with-render"});
         expect(container.innerHTML).toMatch('User is not logged in!');
     });
 });
 
 describe('when user is logged in', function () {
-    it('renders authenticated route\'s components', function () {
-        const { container } = renderWithRouterAndUser({user: new User("John Doe", true), route: "/authenticated"});
+    it('renders authenticated route\'s render()', function () {
+        const { container } = renderWithRouterAndUser({user: new User("John Doe", true), route: "/authenticated-with-render"});
+        expect(container.innerHTML).toMatch('User is logged in!');
+    });
+
+    it('renders authenticated route\'s children', function () {
+        const { container } = renderWithRouterAndUser({user: new User("John Doe", true), route: "/authenticated-with-children"});
         expect(container.innerHTML).toMatch('User is logged in!');
     });
 });
