@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import styled from "styled-components";
 import {
-    BrowserRouter as Router,
+    Router,
     Switch,
     Route
 } from "react-router-dom";
@@ -13,12 +13,14 @@ import User, {GUEST_USER} from "./models/User";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import LoanForm from "./components/LoanForm";
 import RegisterForm from "./components/RegisterForm";
+import { createBrowserHistory } from "history";
 
 const MainContainer = styled(Container)`
     margin-top: 1rem;
 `;
 
 function App() {
+    const history = createBrowserHistory();
     const defaultUser = sessionStorage.getItem("loggedInUser") ? new User(sessionStorage.getItem("loggedInUser"), true) : GUEST_USER;
     const [user, setUser] = useState(defaultUser);
 
@@ -26,17 +28,15 @@ function App() {
         sessionStorage.setItem("jwt", jwt);
         sessionStorage.setItem("loggedInUser", username);
         setUser(new User(username, true));
-
+        history.push("/");
     }
 
-    function handleRegisterSuccess({ jwt, username }) {
-        sessionStorage.setItem("jwt", jwt);
-        sessionStorage.setItem("loggedInUser", username);
-        setUser(new User(username, true));
+    function handleRegisterSuccess() {
+        history.push("/login");
     }
 
     return (
-        <Router>
+        <Router history={history}>
             <UserProvider value={user}>
                 <Header/>
                 <MainContainer>
