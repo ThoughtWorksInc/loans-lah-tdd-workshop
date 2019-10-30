@@ -4,20 +4,24 @@ import fetch from 'node-fetch'
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  makeRequest(res, req.user.sub)
+  makeRequest(res, `${process.env.LOAN_SERVER}/api/v1/accounts/${req.user.sub}/loans`)
+})
+
+router.get('/:loanId', async (req, res) => {
+  makeRequest(res, `${process.env.LOAN_SERVER}/api/v1/accounts/${req.params.loanId}/loans/${req.user.sub}`)
 })
 
 router.post('/', async (req, res) => {
-  makeRequest(res, req.user.sub, {
+  makeRequest(res, `${process.env.LOAN_SERVER}/api/v1/accounts/${req.user.sub}/loans`, {
     method: 'POST',
     body: JSON.stringify(req.body),
     headers: { 'Content-Type': 'application/json' }
   })
 })
 
-const makeRequest = async (res, userId, options) => {
+const makeRequest = async (res, path, options) => {
   try {
-    const response = await fetch(`${process.env.LOAN_SERVER}/api/v1/accounts/${userId}/loans`, options)
+    const response = await fetch(path, options)
     if (response.ok) {
       const body = await response.json()
       res.json(body)
