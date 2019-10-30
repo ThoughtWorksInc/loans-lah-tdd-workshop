@@ -8,7 +8,7 @@ const signJwt = promisify(jwt.sign)
 
 router.post('/', async (req, res) => {
   await User.createUser(req.body.name, req.body.password)
-  res.json()
+  res.status(201).send()
 })
 
 router.post('/login', async (req, res) => {
