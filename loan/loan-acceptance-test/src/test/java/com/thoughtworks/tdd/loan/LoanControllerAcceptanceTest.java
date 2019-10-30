@@ -33,6 +33,8 @@ class LoanControllerAcceptanceTest {
             then().
             statusCode(200).
             body("amount", equalTo(200)).
+            body("interestRate", equalTo(10)).
+            body("durationInDays", equalTo(10)).
             body("totalOutstanding", equalTo(220.0F));
   }
 }

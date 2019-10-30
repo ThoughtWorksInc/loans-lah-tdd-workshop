@@ -33,7 +33,7 @@ public class Loan {
   private int durationInDays;
 
   @Column
-  @JsonProperty("interest_rate")
+  @JsonProperty
   private int interestRate;
 
   private Loan() {
