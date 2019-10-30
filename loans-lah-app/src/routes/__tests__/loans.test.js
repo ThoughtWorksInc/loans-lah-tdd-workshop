@@ -133,4 +133,48 @@ describe('loans api', () => {
         .expect(500)
     })
   })
+  describe('/loans/{id} details', () => {
+    it('lists loans', async () => {
+      const expectedResponse = { id: 1, amount: 200 }
+      nock(process.env.LOAN_SERVER)
+        .get('/api/v1/accounts/1/loans/1')
+        .reply(200, expectedResponse)
+
+      await supertest(app)
+        .get('/loans/1')
+        .set('Authorization', `Bearer ${token}`)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(res => expect(res.body).toEqual(expectedResponse))
+    })
+    it('passes the error down', async () => {
+      nock(process.env.LOAN_SERVER)
+        .get('/api/v1/accounts/1/loans/1')
+        .reply(418)
+
+      await supertest(app)
+        .get('/loans/1')
+        .set('Authorization', `Bearer ${token}`)
+        .set('Accept', 'application/json')
+        .expect(418)
+    })
+    it('gives 401 if missing the token', async () => {
+      await supertest(app)
+        .get('/loans/1')
+        .set('Accept', 'application/json')
+        .expect(401)
+    })
+    it('gives 500 for unexpected errors', async () => {
+      nock(process.env.LOAN_SERVER)
+        .get('/api/v1/accounts/1/loans/1')
+        .reply(200)//no body!
+
+      await supertest(app)
+        .get('/loans/1')
+        .set('Authorization', `Bearer ${token}`)
+        .set('Accept', 'application/json')
+        .expect(500)
+    })
+  })
 })
