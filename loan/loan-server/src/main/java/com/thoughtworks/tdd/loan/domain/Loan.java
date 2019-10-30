@@ -11,9 +11,6 @@ import java.util.Objects;
 
 @Entity
 public class Loan {
-  public static final BigDecimal ONE_HUNDRED = new BigDecimal("100.00");
-  public static final BigDecimal ONE_HUNDRED_FIFTEEN_PERCENT = new BigDecimal("1.15");
-  public static final BigDecimal ONE_HUNDRED_FIVE_PERCENT = new BigDecimal("1.05");
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @JsonProperty
@@ -105,13 +102,13 @@ public class Loan {
       BigDecimal interestRateFactor = getInterestRateFactor();
       return interestRateFactor.multiply(multiplicand);
     } else if (this.durationInDays < 180) {
-      return ONE_HUNDRED_FIFTEEN_PERCENT.multiply(multiplicand);
+      return new BigDecimal("1.15").multiply(multiplicand);
     } else {
-      return ONE_HUNDRED_FIVE_PERCENT.multiply(multiplicand);
+      return new BigDecimal("1.05").multiply(multiplicand);
     }
   }
 
   private BigDecimal getInterestRateFactor() {
-    return BigDecimal.ONE.add(new BigDecimal(interestRate).setScale(2, RoundingMode.HALF_UP).divide(ONE_HUNDRED, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP));
+    return BigDecimal.ONE.add(new BigDecimal(interestRate).setScale(2, RoundingMode.HALF_UP).divide(new BigDecimal("100.00"), RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP));
   }
 }
