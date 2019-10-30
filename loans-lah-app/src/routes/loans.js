@@ -8,7 +8,11 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  makeRequest(res, req.user.sub, { method: 'POST', body: JSON.stringify(req.body) })
+  makeRequest(res, req.user.sub, {
+    method: 'POST',
+    body: JSON.stringify(req.body),
+    headers: { 'Content-Type': 'application/json' }
+  })
 })
 
 const makeRequest = async (res, userId, options) => {
