@@ -27,3 +27,23 @@ describe('login', function () {
             });
     });
 });
+
+describe('register', function () {
+    it('calls POST /api/users with username and password', function () {
+        let username = 'johndoe';
+        let password = 'foobar';
+        let options = {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: { name: username, password }
+        };
+        fetchMock.post('/api/users', 201, options);
+
+        return API.register(username, password)
+            .then(result => {
+                expect(result).toBe(true);
+            });
+    });
+});
