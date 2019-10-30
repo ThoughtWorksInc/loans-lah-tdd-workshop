@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import styled from "styled-components";
 import {
@@ -19,7 +19,21 @@ const MainContainer = styled(Container)`
 `;
 
 function App() {
-    const user = sessionStorage.getItem("loggedInUser") ? new User(sessionStorage.getItem("loggedInUser"), true) : GUEST_USER;
+    const defaultUser = sessionStorage.getItem("loggedInUser") ? new User(sessionStorage.getItem("loggedInUser"), true) : GUEST_USER;
+    const [user, setUser] = useState(defaultUser);
+
+    function handleLoginSuccess({ jwt, username }) {
+        sessionStorage.setItem("jwt", jwt);
+        sessionStorage.setItem("loggedInUser", username);
+        setUser(new User(username, true));
+
+    }
+
+    function handleRegisterSuccess({ jwt, username }) {
+        sessionStorage.setItem("jwt", jwt);
+        sessionStorage.setItem("loggedInUser", username);
+        setUser(new User(username, true));
+    }
 
     return (
         <Router>
@@ -28,10 +42,10 @@ function App() {
                 <MainContainer>
                     <Switch>
                         <Route path="/login">
-                            <LoginForm />
+                            <LoginForm onSuccess={handleLoginSuccess}/>
                         </Route>
                         <Route path="/register">
-                            <RegisterForm />
+                            <RegisterForm onSuccess={handleRegisterSuccess} />
                         </Route>
                         <AuthenticatedRoute path="/loans/new">
                             <LoanForm />

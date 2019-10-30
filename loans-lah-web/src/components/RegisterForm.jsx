@@ -10,17 +10,11 @@ const LoginLink = styled.a `
     padding: .375rem 0;
 `;
 
-function RegisterForm() {
+function RegisterForm({ onSuccess }) {
     const user = useContext(UserContext);
-    const [registered, setRegistered] = useState(false);
 
-    function renderRedirect() {
-        if (user.loggedIn) {
-            return <Redirect to="/"/>;
-        } else if (registered) {
-            return <Redirect to="/login"/>;
-        }
-        return '';
+    if (user.loggedIn) {
+        return <Redirect to="/" />;
     }
 
     let usernameInput = "";
@@ -30,14 +24,11 @@ function RegisterForm() {
         let username = usernameInput.value;
         let password = passwordInput.value;
         return API.register(username, password)
-            .then(result => {
-                setRegistered(true);
-            });
+            .then(result => onSuccess());
     }
 
     return (
         <div>
-            {renderRedirect()}
             <Form onSubmit={handleRegister}>
                 <Form.Group controlId="formUsername">
                     <Form.Label>Username</Form.Label>

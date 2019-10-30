@@ -9,7 +9,7 @@ import {Router, Switch, Route} from "react-router-dom";
 import {UserProvider} from "../../UserContext";
 import User, {GUEST_USER} from "../../models/User";
 
-function renderWithMockLocalStorage({ user }) {
+function renderWithMockLocalStorage({ user, onRegisterSuccess }) {
     const history = createMemoryHistory({ initialEntries: ["/register"] });
     return render(
         <Router history={history}>
@@ -17,7 +17,7 @@ function renderWithMockLocalStorage({ user }) {
                 <UserProvider value={ user }>
                     <Switch>
                         <Route path="/register">
-                            <RegisterForm />
+                            <RegisterForm onSuccess={(data) => { onRegisterSuccess(data); history.push("/login"); }}/>
                         </Route>
                         <Route path="/login">
                             <span>User can login now!</span>
@@ -38,16 +38,16 @@ afterEach(cleanup);
 describe('when user register with valid username and password', function () {
     it('redirects to /login', function () {
         API.register.mockResolvedValueOnce(true);
+        const onRegisterSuccess = jest.fn();
 
-        let wrapper = renderWithMockLocalStorage({user: GUEST_USER });
+        let wrapper = renderWithMockLocalStorage({user: GUEST_USER, onRegisterSuccess });
         fireEvent.change(wrapper.getByLabelText("Username"), { target: { value: 'johndoe' } });
         fireEvent.change(wrapper.getByLabelText("Password"), { target: { value: 'foobar' } });
         fireEvent.click(wrapper.getByText('Register'));
 
         return wait(() => wrapper.getByText('User can login now!'))
             .then(() => {
-                expect(API.register.mock.calls[0][0]).toEqual("johndoe");
-                expect(API.register.mock.calls[0][1]).toEqual("foobar");
+                expect(onRegisterSuccess).toHaveBeenCalled();
             });
     });
 });

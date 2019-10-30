@@ -9,7 +9,7 @@ import {Router, Switch, Route} from "react-router-dom";
 import {UserProvider} from "../../UserContext";
 import User, {GUEST_USER} from "../../models/User";
 
-function renderWithMockLocalStorage({ user }) {
+function renderWithMockLocalStorage({ user, onLoginSuccess }) {
     const history = createMemoryHistory({ initialEntries: ["/login"] });
     return render(
         <Router history={history}>
@@ -17,7 +17,7 @@ function renderWithMockLocalStorage({ user }) {
                 <UserProvider value={ user }>
                     <Switch>
                         <Route path="/login">
-                            <LoginForm />
+                            <LoginForm onSuccess={(data) => { onLoginSuccess(data); history.push("/"); }} />
                         </Route>
                         <Route path="/">
                             <span>User is logged in!</span>
@@ -36,18 +36,17 @@ describe('when user logs in with valid username and password', function () {
     it('stores jwt in session storage and redirects to /', function () {
         const expectedJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";
         API.login.mockResolvedValueOnce(expectedJwt);
+        const onLoginSuccess = jest.fn();
 
-        let wrapper = renderWithMockLocalStorage({user: GUEST_USER });
+        let wrapper = renderWithMockLocalStorage({ user: GUEST_USER, onLoginSuccess });
         fireEvent.change(wrapper.getByLabelText("Username"), { target: { value: 'johndoe' } });
         fireEvent.change(wrapper.getByLabelText("Password"), { target: { value: 'foobar' } });
         fireEvent.click(wrapper.getByText('Log In'));
 
-        return wait(() => expect(sessionStorage.getItem("jwt")).toEqual(expectedJwt))
+        return wait(() => wrapper.getByText('User is logged in!'))
             .then(() => {
-                expect(API.login.mock.calls[0][0]).toEqual("johndoe");
-                expect(API.login.mock.calls[0][1]).toEqual("foobar");
-                expect(wrapper.container.innerHTML).toMatch('User is logged in!');
-                expect(sessionStorage.getItem("loggedInUser")).toEqual("johndoe");
+                expect(onLoginSuccess).toHaveBeenCalled();
+                expect(onLoginSuccess.mock.calls[0][0]).toEqual({ jwt: expectedJwt, username: "johndoe" });
             });
     });
 });
