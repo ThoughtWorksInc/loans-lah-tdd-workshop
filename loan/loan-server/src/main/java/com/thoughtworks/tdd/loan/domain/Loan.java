@@ -10,6 +10,9 @@ import java.util.Objects;
 
 @Entity
 public class Loan {
+  public static final BigDecimal ONE_HUNDRED = new BigDecimal("100.00");
+  public static final BigDecimal ONE_HUNDRED_FIFTEEN_PERCENT = new BigDecimal("1.15");
+  public static final BigDecimal ONE_HUNDRED_FIVE_PERCENT = new BigDecimal("1.05");
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -38,7 +41,7 @@ public class Loan {
     this.amount = amount;
     this.takenAt = takenAt;
     this.durationInDays = durationInDays;
-    this.interestRate = new BigDecimal(interestRate).setScale(2,RoundingMode.HALF_UP);
+    this.interestRate = new BigDecimal(interestRate).setScale(2, RoundingMode.HALF_UP);
   }
 
   public Long getId() {
@@ -96,13 +99,18 @@ public class Loan {
   }
 
   public BigDecimal totalOutstanding() {
-    if(this.durationInDays < 30 ) {
-      return this.amount.multiply(new BigDecimal("1.20"));
+    if (this.durationInDays < 30) {
+      BigDecimal interestRateFactor = getInterestRateFactor();
+      return this.amount.multiply(interestRateFactor);
     } else if (this.durationInDays < 180) {
-      return this.amount.multiply(new BigDecimal("1.15"));
+      return this.amount.multiply(ONE_HUNDRED_FIFTEEN_PERCENT);
     } else {
-      return this.amount.multiply(new BigDecimal("1.10"));
+      return this.amount.multiply(ONE_HUNDRED_FIVE_PERCENT);
 
     }
+  }
+
+  private BigDecimal getInterestRateFactor() {
+    return BigDecimal.ONE.add(interestRate.divide(ONE_HUNDRED, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP));
   }
 }

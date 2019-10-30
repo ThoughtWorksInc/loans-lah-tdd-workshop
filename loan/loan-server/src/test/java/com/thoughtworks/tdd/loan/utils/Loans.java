@@ -19,6 +19,10 @@ public class Loans {
     return new Loan("some account", amount, LocalDate.now(), durationInDays, 10);
   }
 
+  public static Loan loanStartingTodayWithPercentInterest(BigDecimal amount, int durationInDays, int interestRate) {
+    return new Loan("some account", amount, LocalDate.now(), durationInDays, interestRate);
+  }
+
   public static Loan twoMonthsLoanAt10PercentInterest(BigDecimal amount) {
     return loanStartingTodayWith10PercentInterest(amount, 60);
   }
