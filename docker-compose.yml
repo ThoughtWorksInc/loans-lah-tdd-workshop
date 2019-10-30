@@ -38,5 +38,6 @@ services:
       - DB_PASSWORD=secret
       - DB_HOST=app_db_lah
       - JWT_SECRET=superSecret
+      - LOAN_SERVER=http://loan_lah:8080
     depends_on:
       - app_db

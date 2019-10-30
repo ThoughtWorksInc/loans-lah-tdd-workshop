@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 import expressJwt from 'express-jwt'
 import User, { _init as userInit } from '../../models/user'
 
-describe('request.agent(app)', () => {
+describe('users api', () => {
   let sequelize
   let app
   beforeEach(async () => {
