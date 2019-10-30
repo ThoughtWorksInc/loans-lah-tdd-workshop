@@ -51,3 +51,10 @@ describe('when user logs in with valid username and password', function () {
             });
     });
 });
+
+describe('when user is logged in', function () {
+    it('redirects to /', function () {
+        let wrapper = renderWithMockLocalStorage({user: new User("johndoe", true) });
+        expect(wrapper.container.innerHTML).toMatch('User is logged in!');
+    });
+});

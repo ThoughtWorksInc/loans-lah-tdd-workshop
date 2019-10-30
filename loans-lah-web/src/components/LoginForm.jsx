@@ -4,7 +4,6 @@ import {Redirect} from "react-router-dom";
 import styled from 'styled-components';
 import API from '../services/api';
 import UserContext from "../UserContext";
-import User from "../models/User";
 
 const RegisterLink = styled.a `
     display: inline-block;
