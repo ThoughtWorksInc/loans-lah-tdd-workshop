@@ -7,10 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.format;
 import static org.springframework.http.ResponseEntity.accepted;
+import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -23,12 +26,16 @@ public class LoanController {
   private LoanRepository loanRepository;
 
   @PostMapping
-  public ResponseEntity<LoanStatus> createNew(@PathVariable("accountId") String accountId,
+  public ResponseEntity<?> createNew(@PathVariable("accountId") String accountId,
                                               @RequestBody NewLoan newLoan) {
-    var loan = new Loan(accountId, newLoan.getAmount(), LocalDate.now(), newLoan.getDurationInDays(), INTEREST_RATE);
-    var saved = loanRepository.save(loan);
-    var status = new LoanStatus("ok", format("/api/v1/accounts/%s/loans/%s", accountId, saved.getId()));
-    return accepted().body(status);
+    try {
+      var loan = new Loan(accountId, newLoan.getAmount(), LocalDate.now(), newLoan.getDurationInDays(), INTEREST_RATE);
+      var saved = loanRepository.save(loan);
+      var status = new LoanStatus("ok", format("/api/v1/accounts/%s/loans/%s", accountId, saved.getId()));
+      return accepted().body(status);
+    } catch (IllegalArgumentException e){
+      return badRequest().body(Map.of("status", "not ok", "msg", e.getMessage()));
+    }
   }
 
   @GetMapping

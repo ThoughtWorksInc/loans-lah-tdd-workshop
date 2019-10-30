@@ -16,57 +16,56 @@ public class Loan {
   public static final BigDecimal ONE_HUNDRED_FIVE_PERCENT = new BigDecimal("1.05");
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonProperty
   private Long id;
+
   @Column
+  @JsonProperty
   private String account;
+
   @Column
-  private BigDecimal amount;
+  @JsonProperty
+  private int amount;
+
   @Column
+  @JsonProperty
   private LocalDate takenAt;
+
   @Column
+  @JsonProperty
   private int durationInDays;
+
   @Column
   @JsonProperty("interest_rate")
-  private BigDecimal interestRate;
+  private int interestRate;
 
   private Loan() {
   }
 
-  public Loan(Long id, String account, BigDecimal amount, LocalDate takenAt, int durationInDays, int interestRate) {
+  public Loan(Long id, String account, int amount, LocalDate takenAt, int durationInDays, int interestRate) {
     this(account, amount, takenAt, durationInDays, interestRate);
     this.id = id;
   }
 
-  public Loan(String account, BigDecimal amount, LocalDate takenAt, int durationInDays, int interestRate) {
+  public Loan(String account, int amount, LocalDate takenAt, int durationInDays, int interestRate) {
+    validateLoan(account, amount, takenAt, durationInDays, interestRate);
     this.account = account;
     this.amount = amount;
     this.takenAt = takenAt;
     this.durationInDays = durationInDays;
-    this.interestRate = new BigDecimal(interestRate).setScale(2, RoundingMode.HALF_UP);
+    this.interestRate = interestRate;
+  }
+
+  private void validateLoan(String account, int amount, LocalDate takenAt, int durationInDays, int interestRate) {
+    Objects.requireNonNull(account, "account can not be null");
+    Objects.requireNonNull(takenAt, "takenAt date can not be null");
+    if(amount < 0 || durationInDays < 0 || interestRate < 0) {
+      throw new IllegalArgumentException("amount or duration or interest rate cannot be negative");
+    }
   }
 
   public Long getId() {
     return id;
-  }
-
-  public String getAccount() {
-    return account;
-  }
-
-  public BigDecimal getAmount() {
-    return amount;
-  }
-
-  public LocalDate getTakenAt() {
-    return takenAt;
-  }
-
-  public int getDurationInDays() {
-    return durationInDays;
-  }
-
-  public BigDecimal getInterestRate() {
-    return interestRate;
   }
 
   @Override
@@ -101,18 +100,18 @@ public class Loan {
 
   @JsonGetter("totalOutstanding")
   public BigDecimal totalOutstanding() {
+    BigDecimal multiplicand = new BigDecimal(amount);
     if (this.durationInDays < 30) {
       BigDecimal interestRateFactor = getInterestRateFactor();
-      return this.amount.multiply(interestRateFactor);
+      return interestRateFactor.multiply(multiplicand);
     } else if (this.durationInDays < 180) {
-      return this.amount.multiply(ONE_HUNDRED_FIFTEEN_PERCENT);
+      return ONE_HUNDRED_FIFTEEN_PERCENT.multiply(multiplicand);
     } else {
-      return this.amount.multiply(ONE_HUNDRED_FIVE_PERCENT);
-
+      return ONE_HUNDRED_FIVE_PERCENT.multiply(multiplicand);
     }
   }
 
   private BigDecimal getInterestRateFactor() {
-    return BigDecimal.ONE.add(interestRate.divide(ONE_HUNDRED, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP));
+    return BigDecimal.ONE.add(new BigDecimal(interestRate).setScale(2, RoundingMode.HALF_UP).divide(ONE_HUNDRED, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP));
   }
 }

@@ -1,19 +1,14 @@
 package com.thoughtworks.tdd.loan.infrastructure.http;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.math.BigDecimal;
-
 public class NewLoan {
-  private BigDecimal amount;
-  @JsonProperty("duration_in_days")
+  private int amount;
   private int durationInDays;
 
-  public BigDecimal getAmount() {
+  public int getAmount() {
     return amount;
   }
 
-  public void setAmount(BigDecimal amount) {
+  public void setAmount(int amount) {
     this.amount = amount;
   }
 

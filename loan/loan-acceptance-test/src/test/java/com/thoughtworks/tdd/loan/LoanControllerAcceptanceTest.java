@@ -16,7 +16,7 @@ class LoanControllerAcceptanceTest {
     var response =
             given().
                     contentType(JSON).
-                    body("{\"amount\": \"200\", \"duration_in_days\": 10}").
+                    body("{\"amount\": 200, \"durationInDays\": 10}").
                     when().
                     post("/api/v1/accounts/{accountId}/loans/", accountId).
                     then().

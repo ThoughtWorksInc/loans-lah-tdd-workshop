@@ -19,6 +19,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:5.2.2'
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
 
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.4.2'
     testImplementation 'com.h2database:h2:1.4.199'
     testImplementation 'io.rest-assured:rest-assured:4.1.1'
     testImplementation 'io.rest-assured:rest-assured-all:4.1.1'

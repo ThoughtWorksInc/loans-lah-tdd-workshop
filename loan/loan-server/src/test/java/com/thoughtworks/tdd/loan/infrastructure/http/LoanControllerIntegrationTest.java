@@ -10,7 +10,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,11 +35,11 @@ class LoanControllerIntegrationTest {
   private LocalDate takenAt = LocalDate.now();
   private int durationInDays = 10;
   private int interestRate = 10;
-  private BigDecimal amount = new BigDecimal("200");
+  private int amount = 200;
 
   @Test
   void shouldReturnSuccessfulResultForRequestedLoan() {
-    var loanRequest = "{\"amount\": \"200\", \"duration_in_days\": 10}";
+    var loanRequest = "{\"amount\": 200, \"durationInDays\": 10}";
 
     ResponseEntity<LoanStatus> response = testRestTemplate.exchange(
             "/api/v1/accounts/{accountId}/loans/",
@@ -60,7 +59,7 @@ class LoanControllerIntegrationTest {
   void shouldReturnAllLoansForAnAccount() {
     var responseType = new ParameterizedTypeReference<List<Loan>>() {
     };
-    var loanRequest = "{\"amount\": \"200\", \"duration_in_days\": 10}";
+    var loanRequest = "{\"amount\": 200, \"durationInDays\": 10}";
 
     testRestTemplate.exchange(
             "/api/v1/accounts/{accountId}/loans/",
@@ -86,7 +85,7 @@ class LoanControllerIntegrationTest {
 
   @Test
   void shouldReturnLoanByAccountAndLoanId() {
-    var loanRequest = "{\"amount\": \"200\", \"duration_in_days\": 10}";
+    var loanRequest = "{\"amount\": 200, \"durationInDays\": 10}";
 
     ResponseEntity<LoanStatus> response = testRestTemplate.exchange(
             "/api/v1/accounts/{accountId}/loans/",
