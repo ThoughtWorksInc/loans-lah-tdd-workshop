@@ -12,7 +12,7 @@ class LoanControllerAcceptanceTest {
   private String accountId = uuid();
 
   @AcceptanceTest
-  void shouldRequestNewLoanAndSeeAmountAndInterestRage() {
+  void shouldRequestNewLoanAndSeeAmountAndInterestRate() {
     var response =
     given().
             contentType(JSON).
@@ -32,7 +32,6 @@ class LoanControllerAcceptanceTest {
             get(newLoanUrl).
     then().
           statusCode(200).
-          body("amount", equalTo(200)).
-          body("interest_rate", equalTo(10));
+          body("amount", equalTo(200));
   }
 }

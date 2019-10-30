@@ -100,7 +100,7 @@ public class LoanControllerTest {
   @Test
   void shouldRequestForANewLoan() {
     Loan loan = new Loan(account, amount, takenAt, durationInDays, interestRate);
-    Loan persisted = new Loan(id(), loan.getAccount(), loan.getAmount(), loan.getTakenAt(), loan.getDurationInDays(), loan.getInterestRate());
+    Loan persisted = new Loan(id(), account, amount, takenAt, durationInDays, interestRate);
     when(loanRepository.save(loan)).thenReturn(persisted);
 
     var loanRequest = "{\"amount\": \"200\", \"duration_in_days\": 10}";

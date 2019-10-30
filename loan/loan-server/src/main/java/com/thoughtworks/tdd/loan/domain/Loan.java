@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -22,9 +23,9 @@ public class Loan {
   private int durationInDays;
   @Column
   @JsonProperty("interest_rate")
-  private Integer interestRate;
+  private BigDecimal interestRate;
 
-  public Loan() {
+  private Loan() {
   }
 
   public Loan(Long id, String account, BigDecimal amount, LocalDate takenAt, int durationInDays, int interestRate) {
@@ -37,7 +38,7 @@ public class Loan {
     this.amount = amount;
     this.takenAt = takenAt;
     this.durationInDays = durationInDays;
-    this.interestRate = interestRate;
+    this.interestRate = new BigDecimal(interestRate).setScale(2,RoundingMode.HALF_UP);
   }
 
   public Long getId() {
@@ -60,7 +61,7 @@ public class Loan {
     return durationInDays;
   }
 
-  public Integer getInterestRate() {
+  public BigDecimal getInterestRate() {
     return interestRate;
   }
 
@@ -92,5 +93,16 @@ public class Loan {
             ", durationInDays=" + durationInDays +
             ", interestRate=" + interestRate +
             '}';
+  }
+
+  public BigDecimal totalOutstanding() {
+    if(this.durationInDays < 30 ) {
+      return this.amount.multiply(new BigDecimal("1.20"));
+    } else if (this.durationInDays < 180) {
+      return this.amount.multiply(new BigDecimal("1.15"));
+    } else {
+      return this.amount.multiply(new BigDecimal("1.10"));
+
+    }
   }
 }

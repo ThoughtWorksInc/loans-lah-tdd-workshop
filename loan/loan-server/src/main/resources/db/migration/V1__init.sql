@@ -4,5 +4,5 @@ create table loan(
     amount numeric not null,
     taken_at date not null,
     duration_in_days int not null,
-    interest_rate int
+    interest_rate numeric
 );
