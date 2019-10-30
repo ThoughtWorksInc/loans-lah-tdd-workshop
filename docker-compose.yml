@@ -1,35 +1,35 @@
 version: '3.7'
 services:
   db:
-    container_name: postgres_lah
+    container_name: postgres-lah
     build:
       context: ./db
     ports:
     - "5432:5432"
   credit_history:
-    container_name: credit_history_lah
+    container_name: credit-history-lah
     build:
       context: ./credit-history/credit-history-server
     ports:
     - "8000:8080"
     command: java -jar credit-history.jar
   loan:
-    container_name: loan_lah
+    container_name: loan-lah
     build:
       context: ./loan/loan-server
     ports:
     - "8010:8080"
     command: java -jar loan.jar
     environment:
-    - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_lah:5432/loans
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-lah:5432/loans
   app_db:
-    container_name: app_db_lah
+    container_name: app-db-lah
     build:
       context: ./db
     ports:
     - "6543:5432"
   app:
-    container_name: app_lah
+    container_name: app-lah
     build:
       context: ./loans-lah-app
     ports:
@@ -38,8 +38,8 @@ services:
       - DB_NAME=loans
       - DB_USER=loan
       - DB_PASSWORD=secret
-      - DB_HOST=app_db_lah
+      - DB_HOST=app-db-lah
       - JWT_SECRET=superSecret
-      - LOAN_SERVER=http://loan_lah:8080
+      - LOAN_SERVER=http://loan-lah:8080
     depends_on:
       - app_db
