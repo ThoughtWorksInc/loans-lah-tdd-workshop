@@ -20,3 +20,23 @@ services:
     ports:
     - "8010:8080"
     command: java -jar loan.jar
+  app_db:
+    container_name: app_db_lah
+    build:
+      context: ./db
+    ports:
+    - "6543:5432"
+  app:
+    container_name: app_lah
+    build:
+      context: ./loans-lah-app
+    ports:
+      - "8910:3000"
+    environment:
+      - DB_NAME=loans
+      - DB_USER=loan
+      - DB_PASSWORD=secret
+      - DB_HOST=app_db_lah
+      - JWT_SECRET=superSecret
+    depends_on:
+      - app_db

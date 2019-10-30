@@ -6,9 +6,11 @@ import userRouter from './routes/users'
 
 import jwt from 'express-jwt'
 
+import dbInit from './models'
+
 const app = express()
 
-export default app
+dbInit()
 
 app.use(logger('dev'))
 app.use(express.json())
@@ -24,3 +26,5 @@ app.use(
 
 app.use('/', indexRouter)
 app.use('/users', userRouter)
+
+app.listen(3000, () => console.log(`Loan-lah app listening on port 3000!`))
