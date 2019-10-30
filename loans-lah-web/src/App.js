@@ -12,13 +12,14 @@ import { UserProvider } from './UserContext'
 import User, {GUEST_USER} from "./models/User";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import LoanForm from "./components/LoanForm";
+import RegisterForm from "./components/RegisterForm";
 
 const MainContainer = styled(Container)`
     margin-top: 1rem;
 `;
 
 function App() {
-    const user = new User("John Doe", true);
+    const user = GUEST_USER;
 
     return (
         <Router>
@@ -28,6 +29,9 @@ function App() {
                     <Switch>
                         <Route path="/login">
                             <LoginForm />
+                        </Route>
+                        <Route path="/register">
+                            <RegisterForm />
                         </Route>
                         <AuthenticatedRoute path="/loans/new">
                             <LoanForm />

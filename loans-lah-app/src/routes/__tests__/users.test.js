@@ -38,8 +38,7 @@ describe('users api', () => {
       .post('/users')
       .send({name: 'john', password: 'password1'})
       .set('Accept', 'application/json')
-      .expect(200)
-      .expect('Content-Type', /json/)
+      .expect(201)
 
     const john = await User.findOne({where: {name: 'john'}})
     expect(john).toBeTruthy()
