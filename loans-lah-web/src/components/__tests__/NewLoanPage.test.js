@@ -1,7 +1,7 @@
 import React from "react";
 import {cleanup, fireEvent, wait} from "@testing-library/react";
 import '@testing-library/jest-dom/extend-expect';
-import LoanForm from "../LoanForm";
+import NewLoanPage from "../NewLoanPage";
 import API from "../../services/api";
 import User from "../../models/User";
 import {renderWithUserContext} from "../../__tests__/test_utils";
@@ -15,7 +15,7 @@ describe('when user click Apply with valid form', function () {
         const onApplySuccess = jest.fn();
         API.applyNewLoan.mockResolvedValueOnce(true);
 
-        let wrapper = renderWithUserContext(<LoanForm onSuccess={onApplySuccess} />, { user: new User("johndoe", jwt) });
+        let wrapper = renderWithUserContext(<NewLoanPage onSuccess={onApplySuccess} />, { user: new User("johndoe", jwt) });
         fireEvent.change(wrapper.getByLabelText('Amount'), { target: { value: '100' } });
         fireEvent.change(wrapper.getByLabelText('Duration'), { target: { value: '3' } });
         fireEvent.click(wrapper.getByText('Apply'));

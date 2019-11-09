@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import API from "../services/api";
 import UserContext from "../UserContext";
 
-function LoanForm({ onSuccess }) {
+function NewLoanPage({ onSuccess }) {
     const user = useContext(UserContext);
 
     let amounInput = "";
@@ -41,4 +41,4 @@ function LoanForm({ onSuccess }) {
     )
 }
 
-export default LoanForm;
+export default NewLoanPage;

@@ -2,7 +2,7 @@ export default class User {
     constructor(name, jwt) {
         this.name = name;
         this.jwt = jwt;
-        this.loggedIn = (jwt == null);
+        this.loggedIn = (jwt != null);
     }
 }
 

@@ -7,12 +7,12 @@ import {
     Route
 } from "react-router-dom";
 import Header from "./components/Header";
-import LoginForm from "./components/LoginForm";
+import LoginPage from "./components/LoginPage";
 import { UserProvider } from './UserContext'
 import User, {GUEST_USER} from "./models/User";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
-import LoanForm from "./components/LoanForm";
-import RegisterForm from "./components/RegisterForm";
+import NewLoanPage from "./components/NewLoanPage";
+import RegisterPage from "./components/RegisterPage";
 import { createBrowserHistory } from "history";
 
 const MainContainer = styled(Container)`
@@ -47,13 +47,13 @@ function App() {
                 <MainContainer>
                     <Switch>
                         <Route path="/login">
-                            <LoginForm onSuccess={handleLoginSuccess}/>
+                            <LoginPage onSuccess={handleLoginSuccess}/>
                         </Route>
                         <Route path="/register">
-                            <RegisterForm onSuccess={handleRegisterSuccess} />
+                            <RegisterPage onSuccess={handleRegisterSuccess} />
                         </Route>
                         <AuthenticatedRoute path="/loans/new">
-                            <LoanForm />
+                            <NewLoanPage />
                         </AuthenticatedRoute>
                     </Switch>
                 </MainContainer>

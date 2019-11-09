@@ -1,16 +1,16 @@
-import React, {useContext, useState} from 'react';
+import React, { useState, useContext } from 'react';
 import {Form, Button} from 'react-bootstrap';
-import styled from 'styled-components';
 import {Redirect} from "react-router-dom";
+import styled from 'styled-components';
 import API from '../services/api';
 import UserContext from "../UserContext";
 
-const LoginLink = styled.a `
+const RegisterLink = styled.a `
     display: inline-block;
     padding: .375rem 0;
 `;
 
-function RegisterForm({ onSuccess }) {
+function LoginPage({ onSuccess }) {
     const user = useContext(UserContext);
 
     if (user.loggedIn) {
@@ -19,17 +19,17 @@ function RegisterForm({ onSuccess }) {
 
     let usernameInput = "";
     let passwordInput = "";
-    function handleRegister(event) {
+    function handleLogin(event) {
         event.preventDefault();
         let username = usernameInput.value;
         let password = passwordInput.value;
-        return API.register(username, password)
-            .then(result => onSuccess());
+        return API.login(username, password)
+            .then(jwt => onSuccess({ jwt, username }));
     }
 
     return (
         <div>
-            <Form onSubmit={handleRegister}>
+            <Form onSubmit={handleLogin}>
                 <Form.Group controlId="formUsername">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" placeholder="Username" ref={(input) => { usernameInput = input; }}/>
@@ -40,12 +40,12 @@ function RegisterForm({ onSuccess }) {
                     <Form.Control type="password" placeholder="Password" ref={(input) => { passwordInput = input; }}/>
                 </Form.Group>
                 <Button variant="primary" type="submit">
-                    Register
+                    Log In
                 </Button>
             </Form>
-            <LoginLink href="/login">Already had an account? Login here!</LoginLink>
+            <RegisterLink href="/register">Register now!</RegisterLink>
         </div>
-    )
+    );
 }
 
-export default RegisterForm;
+export default LoginPage;
