@@ -37,6 +37,7 @@
     "@react-mock/localstorage": "^0.1.2",
     "@testing-library/jest-dom": "^4.2.0",
     "@testing-library/react": "^9.3.0",
+    "@testing-library/user-event": "^7.1.2",
     "fetch-mock": "^8.0.0-alpha.11",
     "history": "latest",
     "node-fetch": "^2.6.0"
