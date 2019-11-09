@@ -40,7 +40,7 @@ const API = {
         }).then(checkStatus)
             .then(data => true);
     },
-    applyNewLoan({ amount, duration }) {
+    applyNewLoan({ jwt, loan: { amount, duration } }) {
         let payload = {
             amount,
             durationInDays: duration
@@ -50,7 +50,8 @@ const API = {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify(payload)
         }).then(checkStatus)

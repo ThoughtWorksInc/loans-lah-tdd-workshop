@@ -52,6 +52,7 @@ describe('register', function () {
 
 describe('applyNewLoan', function () {
     it('calls POST /api/loans with amount and duration', function () {
+        let jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";
         let amount = 10.2;
         let duration = 30;
         let response = {
@@ -61,13 +62,14 @@ describe('applyNewLoan', function () {
         let options = {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
             body: { amount, durationInDays: duration }
         };
         fetchMock.post('/api/loans', response, options);
 
-        return API.applyNewLoan({ amount, duration })
+        return API.applyNewLoan({ jwt, loan: { amount, duration } })
             .then(result => {
                 expect(result).toBe(true);
             });

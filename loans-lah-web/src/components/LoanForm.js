@@ -15,7 +15,7 @@ function LoanForm({ onSuccess }) {
         let duration = parseInt(durationInput.value);
 
         return API.applyNewLoan({ jwt: user.jwt, loan: { amount, duration } })
-            .then(({ id }) => onSuccess({ loanId: id }));
+            .then(success => onSuccess());
     }
 
     return (

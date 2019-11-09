@@ -13,7 +13,7 @@ describe('when user click Apply with valid form', function () {
     it('submits new loan and call onSuccess callback', function () {
         const jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";
         const onApplySuccess = jest.fn();
-        API.applyNewLoan.mockResolvedValueOnce({ id: 1 });
+        API.applyNewLoan.mockResolvedValueOnce(true);
 
         let wrapper = renderWithUserContext(<LoanForm onSuccess={onApplySuccess} />, { user: new User("johndoe", jwt) });
         fireEvent.change(wrapper.getByLabelText('Amount'), { target: { value: '100' } });
@@ -30,7 +30,6 @@ describe('when user click Apply with valid form', function () {
                     }
                 });
                 expect(onApplySuccess).toHaveBeenCalled();
-                expect(onApplySuccess.mock.calls[0][0]).toEqual({ loanId: 1 });
             });
     });
 });
