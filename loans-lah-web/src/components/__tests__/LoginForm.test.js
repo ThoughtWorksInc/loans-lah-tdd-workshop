@@ -33,7 +33,7 @@ API.login = jest.fn();
 afterEach(cleanup);
 
 describe('when user logs in with valid username and password', function () {
-    it('stores jwt in session storage and redirects to /', function () {
+    it('stores jwt in session storage and calls onSuccess callback', function () {
         const expectedJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";
         API.login.mockResolvedValueOnce(expectedJwt);
         const onLoginSuccess = jest.fn();

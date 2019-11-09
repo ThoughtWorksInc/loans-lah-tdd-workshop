@@ -35,8 +35,8 @@ function renderWithMockLocalStorage({ user, onRegisterSuccess }) {
 API.register = jest.fn();
 afterEach(cleanup);
 
-describe('when user register with valid username and password', function () {
-    it('redirects to /login', function () {
+describe('when user click Register with valid username and password', function () {
+    it('registers user and calls onSuccess callback', function () {
         API.register.mockResolvedValueOnce(true);
         const onRegisterSuccess = jest.fn();
 
