@@ -40,6 +40,10 @@ function App() {
         history.push("/login");
     }
 
+    function handleAlreadyLoggedInUser() {
+        history.push("/");
+    }
+
     return (
         <Router history={history}>
             <UserProvider value={user}>
@@ -47,10 +51,10 @@ function App() {
                 <MainContainer>
                     <Switch>
                         <Route path="/login">
-                            <LoginPage onSuccess={handleLoginSuccess}/>
+                            <LoginPage onSuccess={handleLoginSuccess} onUserLoggedIn={handleAlreadyLoggedInUser}/>
                         </Route>
                         <Route path="/register">
-                            <RegisterPage onSuccess={handleRegisterSuccess} />
+                            <RegisterPage onSuccess={handleRegisterSuccess} onUserLoggedIn={handleAlreadyLoggedInUser}/>
                         </Route>
                         <AuthenticatedRoute path="/loans/new">
                             <NewLoanPage />

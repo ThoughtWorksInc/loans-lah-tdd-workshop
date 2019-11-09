@@ -1,33 +1,10 @@
 import React from "react";
-import {render, cleanup, fireEvent, wait} from "@testing-library/react";
+import {cleanup, fireEvent, wait} from "@testing-library/react";
 import '@testing-library/jest-dom/extend-expect';
-import { LocalStorageMock } from '@react-mock/localstorage';
 import LoginPage from "../LoginPage";
 import API from "../../services/api";
-import {createMemoryHistory} from "history";
-import {Router, Switch, Route} from "react-router-dom";
-import {UserProvider} from "../../UserContext";
 import User, {GUEST_USER} from "../../models/User";
-
-function renderWithMockLocalStorage({ user, onLoginSuccess }) {
-    const history = createMemoryHistory({ initialEntries: ["/login"] });
-    return render(
-        <Router history={history}>
-            <LocalStorageMock>
-                <UserProvider value={ user }>
-                    <Switch>
-                        <Route path="/login">
-                            <LoginPage onSuccess={(data) => { onLoginSuccess(data); history.push("/"); }} />
-                        </Route>
-                        <Route path="/">
-                            <span>User is logged in!</span>
-                        </Route>
-                    </Switch>
-                </UserProvider>
-            </LocalStorageMock>
-        </Router>
-    );
-}
+import {renderWithUserContext} from "../../__tests__/test_utils";
 
 API.login = jest.fn();
 afterEach(cleanup);
@@ -38,13 +15,16 @@ describe('when user logs in with valid username and password', function () {
         API.login.mockResolvedValueOnce(expectedJwt);
         const onLoginSuccess = jest.fn();
 
-        let wrapper = renderWithMockLocalStorage({ user: GUEST_USER, onLoginSuccess });
+        let wrapper = renderWithUserContext(<LoginPage onSuccess={onLoginSuccess} />,
+            { user: GUEST_USER });
         fireEvent.change(wrapper.getByLabelText("Username"), { target: { value: 'johndoe' } });
         fireEvent.change(wrapper.getByLabelText("Password"), { target: { value: 'foobar' } });
         fireEvent.click(wrapper.getByText('Log In'));
 
-        return wait(() => wrapper.getByText('User is logged in!'))
+        return wait(() => expect(API.login).toHaveBeenCalled())
             .then(() => {
+                expect(API.login.mock.calls[0][0]).toEqual('johndoe');
+                expect(API.login.mock.calls[0][1]).toEqual('foobar');
                 expect(onLoginSuccess).toHaveBeenCalled();
                 expect(onLoginSuccess.mock.calls[0][0]).toEqual({ jwt: expectedJwt, username: "johndoe" });
             });
@@ -52,8 +32,12 @@ describe('when user logs in with valid username and password', function () {
 });
 
 describe('when user is logged in', function () {
-    it('redirects to /', function () {
-        let wrapper = renderWithMockLocalStorage({user: new User("johndoe", "some token") });
-        expect(wrapper.container.innerHTML).toMatch('User is logged in!');
+    it('calls onUserLoggedIn callback', function () {
+        const onUserLoggedIn = jest.fn();
+
+        renderWithUserContext(<LoginPage onUserLoggedIn={onUserLoggedIn} />,
+            { user: new User("johndoe", "some token") });
+
+        expect(onUserLoggedIn).toHaveBeenCalled();
     });
 });

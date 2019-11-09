@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import {Form, Button} from 'react-bootstrap';
-import {Redirect} from "react-router-dom";
 import styled from 'styled-components';
 import API from '../services/api';
 import UserContext from "../UserContext";
@@ -10,11 +9,15 @@ const RegisterLink = styled.a `
     padding: .375rem 0;
 `;
 
-function LoginPage({ onSuccess }) {
+/**
+ * @return {null}
+ */
+function LoginPage({ onSuccess, onUserLoggedIn }) {
     const user = useContext(UserContext);
 
     if (user.loggedIn) {
-        return <Redirect to="/" />;
+        onUserLoggedIn();
+        return null;
     }
 
     let usernameInput = "";
