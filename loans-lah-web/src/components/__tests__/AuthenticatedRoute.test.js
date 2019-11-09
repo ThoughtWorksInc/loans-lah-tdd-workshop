@@ -39,12 +39,12 @@ describe('when user is not logged in', function () {
 
 describe('when user is logged in', function () {
     it('renders authenticated route\'s render()', function () {
-        const { container } = renderWithRouterAndUser({user: new User("John Doe", true), route: "/authenticated-with-render"});
+        const { container } = renderWithRouterAndUser({user: new User("John Doe", "some token"), route: "/authenticated-with-render"});
         expect(container.innerHTML).toMatch('User is logged in!');
     });
 
     it('renders authenticated route\'s children', function () {
-        const { container } = renderWithRouterAndUser({user: new User("John Doe", true), route: "/authenticated-with-children"});
+        const { container } = renderWithRouterAndUser({user: new User("John Doe", "some token"), route: "/authenticated-with-children"});
         expect(container.innerHTML).toMatch('User is logged in!');
     });
 });

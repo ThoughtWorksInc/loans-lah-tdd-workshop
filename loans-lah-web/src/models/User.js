@@ -1,8 +1,9 @@
 export default class User {
-    constructor(name, loggedIn) {
+    constructor(name, jwt) {
         this.name = name;
-        this.loggedIn = loggedIn;
+        this.jwt = jwt;
+        this.loggedIn = (jwt == null);
     }
 }
 
-export const GUEST_USER = new User("Guest", false);
+export const GUEST_USER = new User("Guest", null);

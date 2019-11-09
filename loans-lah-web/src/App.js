@@ -21,13 +21,18 @@ const MainContainer = styled(Container)`
 
 function App() {
     const history = createBrowserHistory();
-    const defaultUser = sessionStorage.getItem("loggedInUser") ? new User(sessionStorage.getItem("loggedInUser"), true) : GUEST_USER;
+    let defaultUser;
+    if (sessionStorage.getItem("loggedInUser")) {
+        defaultUser = new User(sessionStorage.getItem("loggedInUser"), sessionStorage.getItem("jwt"));
+    } else {
+        defaultUser = GUEST_USER;
+    }
     const [user, setUser] = useState(defaultUser);
 
     function handleLoginSuccess({ jwt, username }) {
         sessionStorage.setItem("jwt", jwt);
         sessionStorage.setItem("loggedInUser", username);
-        setUser(new User(username, true));
+        setUser(new User(username, jwt));
         history.push("/");
     }
 

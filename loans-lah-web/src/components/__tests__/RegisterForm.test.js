@@ -54,7 +54,7 @@ describe('when user register with valid username and password', function () {
 
 describe('when user is logged in', function () {
     it('redirects to /', function () {
-        let wrapper = renderWithMockLocalStorage({user: new User("johndoe", true) });
+        let wrapper = renderWithMockLocalStorage({user: new User("johndoe", "some token") });
         expect(wrapper.container.innerHTML).toMatch('User is logged in!');
     });
 });

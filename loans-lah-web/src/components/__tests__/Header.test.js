@@ -19,7 +19,7 @@ describe('when user is not logged in', function () {
 
 describe('when user is logged in', function () {
     it('renders header with only app label', function () {
-        const wrapper = renderWithUserContext(<Header />, { user: new User("John Doe", true) });
+        const wrapper = renderWithUserContext(<Header />, { user: new User("John Doe", "some token") });
         expect(wrapper.queryByText("Apply Now!")).toBeVisible();
         expect(wrapper.queryByText("My Applications")).toBeVisible();
         expect(wrapper.queryByText("My Loans")).toBeVisible();
