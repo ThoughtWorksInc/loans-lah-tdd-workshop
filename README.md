@@ -13,6 +13,14 @@ Backend application, exposes api for taking a loan.
 ### db
 Database module, used by docker
 
+## Requirements
+`openjdk-11`
+`docker` latest version
+`docker-compose` [compatible](https://docs.docker.com/compose/compose-file/) with version 3.7 of compose files
+
+## How to test
+Run `./build.sh` from the main directory to build all modules
+
 ## How to build & run
 Run `./build.sh` from the main directory to build all modules, next `docker-compose up --force-recreate` to run all of them.
 
