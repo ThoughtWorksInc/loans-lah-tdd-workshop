@@ -13,6 +13,7 @@ import User, {GUEST_USER} from "./models/User";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import NewLoanPage from "./components/NewLoanPage";
 import RegisterPage from "./components/RegisterPage";
+import LoansPage from "./components/LoansPage";
 import { createBrowserHistory } from "history";
 
 const MainContainer = styled(Container)`
@@ -44,6 +45,10 @@ function App() {
         history.push("/");
     }
 
+    function handleLoanCreated() {
+        history.push('/loans')
+    }
+
     return (
         <Router history={history}>
             <UserProvider value={user}>
@@ -56,8 +61,11 @@ function App() {
                         <Route path="/register">
                             <RegisterPage onSuccess={handleRegisterSuccess} onUserLoggedIn={handleAlreadyLoggedInUser}/>
                         </Route>
+                        <AuthenticatedRoute path="/loans">
+                            <LoansPage />
+                        </AuthenticatedRoute>
                         <AuthenticatedRoute path="/loans/new">
-                            <NewLoanPage />
+                            <NewLoanPage onSuccess={handleLoanCreated} />
                         </AuthenticatedRoute>
                     </Switch>
                 </MainContainer>
