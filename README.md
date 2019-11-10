@@ -1,6 +1,9 @@
 # loans-lah-tdd-workshop
 
 ## Modules
+### api-tests
+End to end tests for Loans Lah!
+
 ### credit-history
 Legacy 3rd party application, used as a dependency in loans-lah app to calculate credit eligibility.
 
