@@ -8,3 +8,6 @@ popd
 
 pushd ./loans-lah-app; npm i; npm run build;
 popd
+
+pushd ./api-tests; ./build.sh
+popd
