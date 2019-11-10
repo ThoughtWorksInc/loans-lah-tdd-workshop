@@ -38,7 +38,7 @@ const API = {
             },
             body: JSON.stringify(payload)
         }).then(checkStatus)
-            .then(data => true);
+            .then(res => true);
     },
     applyNewLoan({ jwt, loan: { amount, duration } }) {
         let payload = {
@@ -55,7 +55,19 @@ const API = {
             },
             body: JSON.stringify(payload)
         }).then(checkStatus)
-            .then(data => true);
+            .then(res => true);
+    },
+    getAllLoans({ jwt }) {
+        return fetch('/api/loans', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            }
+        }).then(checkStatus)
+            .then(res => res.json())
+            .then(data => data);
     }
 };
 
