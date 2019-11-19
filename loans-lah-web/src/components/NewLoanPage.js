@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import API from "../services/api";
@@ -6,11 +6,28 @@ import UserContext from "../UserContext";
 
 function NewLoanPage({ onSuccess }) {
     const user = useContext(UserContext);
+    const [formErrors, setFormErrors] = useState({});
 
     let amounInput = "";
     let durationInput = "";
+    function validateForm() {
+        let errors = { ...formErrors };
+        if (!amounInput.value) {
+            errors = { ...errors, amount: "Amount cannot be empty." }
+        }
+
+        return errors;
+    }
+
     function handleApplyLoan(event) {
         event.preventDefault();
+
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors);
+            return '';
+        }
+
         let amount = parseFloat(amounInput.value);
         let duration = parseInt(durationInput.value);
 
@@ -22,7 +39,10 @@ function NewLoanPage({ onSuccess }) {
         <Form onSubmit={handleApplyLoan}>
             <Form.Group controlId="formAmount">
                 <Form.Label>Amount</Form.Label>
-                <Form.Control type="number" placeholder="Amount" ref={(input) => { amounInput = input; }}/>
+                <Form.Control type="number" isInvalid={!!formErrors.amount} placeholder="Amount" ref={(input) => { amounInput = input; }}/>
+                <Form.Control.Feedback type="invalid">
+                    {formErrors.amount}
+                </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group controlId="formDuration">
