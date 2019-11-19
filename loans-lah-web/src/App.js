@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import styled from "styled-components";
 import {
     Router,
     Switch,
-    Route
+    Route, Redirect
 } from "react-router-dom";
 import Header from "./components/Header";
 import LoginPage from "./components/LoginPage";
@@ -55,16 +55,23 @@ function App() {
                 <Header/>
                 <MainContainer>
                     <Switch>
-                        <Route path="/login">
+                        <Route exact path="/" render={() => (
+                            user.loggedIn ? (
+                                <Redirect to="/loans"/>
+                            ) : (
+                                <Redirect to="/login"/>
+                            )
+                        )}/>
+                        <Route exact path="/login">
                             <LoginPage onSuccess={handleLoginSuccess} onUserLoggedIn={handleAlreadyLoggedInUser}/>
                         </Route>
-                        <Route path="/register">
+                        <Route exact path="/register">
                             <RegisterPage onSuccess={handleRegisterSuccess} onUserLoggedIn={handleAlreadyLoggedInUser}/>
                         </Route>
-                        <AuthenticatedRoute path="/loans/new">
+                        <AuthenticatedRoute exact path="/loans/new">
                             <NewLoanPage onSuccess={handleLoanCreated} />
                         </AuthenticatedRoute>
-                        <AuthenticatedRoute path="/loans">
+                        <AuthenticatedRoute exact path="/loans">
                             <LoansPage />
                         </AuthenticatedRoute>
                     </Switch>
