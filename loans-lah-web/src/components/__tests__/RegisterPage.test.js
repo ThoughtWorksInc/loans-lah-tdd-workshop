@@ -5,7 +5,6 @@ import RegisterPage from "../RegisterPage";
 import API from "../../services/api";
 import User, {GUEST_USER} from "../../models/User";
 import {renderWithUserContext} from "../../__tests__/test_utils";
-import LoginPage from "../LoginPage";
 API.register = jest.fn();
 afterEach(cleanup);
 
