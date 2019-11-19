@@ -34,4 +34,6 @@ Run `./build.sh` from the main directory to build all modules
 ## How to build & run
 Run `./build.sh` from the main directory to build all modules, next `docker-compose up --force-recreate` to run all of them.
 
+Then, go to `loans-lah-web`, and run `npm start`
+
 
