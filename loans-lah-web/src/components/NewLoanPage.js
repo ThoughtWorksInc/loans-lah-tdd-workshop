@@ -49,7 +49,7 @@ function NewLoanPage({ onSuccess }) {
             <Form onSubmit={handleApplyLoan}>
                 <Form.Group controlId="formAmount">
                     <Form.Label>Amount</Form.Label>
-                    <Form.Control type="number" isInvalid={!!formErrors.amount} placeholder="Amount" ref={(input) => { amounInput = input; }}/>
+                    <Form.Control type="number" step="0.01" isInvalid={!!formErrors.amount} placeholder="Amount" ref={(input) => { amounInput = input; }}/>
                     <Form.Control.Feedback type="invalid">
                         {formErrors.amount}
                     </Form.Control.Feedback>
