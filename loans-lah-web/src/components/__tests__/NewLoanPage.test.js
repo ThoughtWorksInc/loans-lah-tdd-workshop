@@ -48,7 +48,23 @@ describe('when user applies for a new loan', function () {
             fireEvent.click(wrapper.getByText('Apply'));
 
             expect(wrapper.queryByText('Amount cannot be empty.')).toBeVisible();
-            expect(onApplySuccess).not.toHaveBeenCalled()
+            expect(onApplySuccess).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('with API returning error', function () {
+        it('shows server error', function () {
+            API.applyNewLoan.mockRejectedValueOnce(new Error("400 Bad Request."));
+
+            let wrapper = renderWithUserContext(<NewLoanPage onSuccess={onApplySuccess} />, { user: new User("johndoe", jwt) });
+            fireEvent.change(wrapper.getByLabelText('Amount'), { target: { value: '100' } });
+            fireEvent.change(wrapper.getByLabelText('Duration'), { target: { value: '3' } });
+            fireEvent.click(wrapper.getByText('Apply'));
+
+            return wait(() => expect(API.applyNewLoan).toHaveBeenCalled())
+                .then(() => {
+                    expect(wrapper.queryByText('Server error: Error: 400 Bad Request.')).toBeVisible();
+                });
         });
     });
 });
