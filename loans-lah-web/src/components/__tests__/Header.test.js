@@ -1,6 +1,6 @@
 import React from 'react';
 import { cleanup } from '@testing-library/react';
-import { renderWithUserContext } from "../../__tests__/test_utils";
+import { renderWithUserContext } from "../../test_utils";
 import '@testing-library/jest-dom/extend-expect';
 import Header from '../Header';
 import User, {GUEST_USER} from "../../models/User";

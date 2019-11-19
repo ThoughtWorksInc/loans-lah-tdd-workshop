@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import NewLoanPage from "../NewLoanPage";
 import API from "../../services/api";
 import User from "../../models/User";
-import {renderWithUserContext} from "../../__tests__/test_utils";
+import {renderWithUserContext} from "../../test_utils";
 
 describe('when user applies for a new loan', function () {
     const jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";

@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import LoginPage from "../LoginPage";
 import API from "../../services/api";
 import User, {GUEST_USER} from "../../models/User";
-import {renderWithUserContext} from "../../__tests__/test_utils";
+import {renderWithUserContext} from "../../test_utils";
 
 API.login = jest.fn();
 afterEach(cleanup);

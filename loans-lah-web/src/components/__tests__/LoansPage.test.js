@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import LoansPage from "../LoansPage";
 import API from "../../services/api";
 import User from "../../models/User";
-import {renderWithUserContext} from "../../__tests__/test_utils";
+import {renderWithUserContext} from "../../test_utils";
 
 API.getAllLoans = jest.fn();
 afterEach(cleanup);
