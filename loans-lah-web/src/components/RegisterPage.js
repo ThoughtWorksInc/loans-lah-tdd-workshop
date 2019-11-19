@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import {Form, Button} from 'react-bootstrap';
+import React, {useContext, useState} from 'react';
+import {Form, Button, Alert} from 'react-bootstrap';
 import styled from 'styled-components';
 import API from '../services/api';
 import UserContext from "../UserContext";
@@ -14,6 +14,7 @@ const LoginLink = styled.a `
  */
 function RegisterPage({ onSuccess, onUserLoggedIn }) {
     const user = useContext(UserContext);
+    const [formErrors, setFormErrors] = useState([]);
 
     if (user.loggedIn) {
         onUserLoggedIn();
@@ -27,11 +28,20 @@ function RegisterPage({ onSuccess, onUserLoggedIn }) {
         let username = usernameInput.value;
         let password = passwordInput.value;
         return API.register(username, password)
-            .then(result => onSuccess());
+            .then(result => {
+                setFormErrors([]);
+                return onSuccess();
+            })
+            .catch(err => setFormErrors([err.toString()]));
     }
 
+    let alerts = '';
+    if (formErrors.length > 0) {
+        alerts = (<Alert variant="danger">Invalid username or password.</Alert>);
+    }
     return (
         <div>
+            {alerts}
             <Form onSubmit={handleRegister}>
                 <Form.Group controlId="formUsername">
                     <Form.Label>Username</Form.Label>
