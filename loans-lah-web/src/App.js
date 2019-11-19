@@ -61,11 +61,11 @@ function App() {
                         <Route path="/register">
                             <RegisterPage onSuccess={handleRegisterSuccess} onUserLoggedIn={handleAlreadyLoggedInUser}/>
                         </Route>
-                        <AuthenticatedRoute path="/loans">
-                            <LoansPage />
-                        </AuthenticatedRoute>
                         <AuthenticatedRoute path="/loans/new">
                             <NewLoanPage onSuccess={handleLoanCreated} />
+                        </AuthenticatedRoute>
+                        <AuthenticatedRoute path="/loans">
+                            <LoansPage />
                         </AuthenticatedRoute>
                     </Switch>
                 </MainContainer>
