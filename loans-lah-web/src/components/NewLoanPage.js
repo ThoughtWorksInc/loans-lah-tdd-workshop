@@ -9,12 +9,12 @@ function NewLoanPage({ onSuccess }) {
     const user = useContext(UserContext);
     const [formErrors, setFormErrors] = useState({});
 
-    let amounInput = "";
-    let durationInput = "";
+    let amounInput = {};
+    let durationInput = {};
     function validateForm() {
-        let errors = { ...formErrors };
+        let errors = {};
         if (!amounInput.value) {
-            errors = { ...errors, amount: "Amount cannot be empty." }
+            errors.amount = "Amount cannot be empty.";
         }
 
         return errors;

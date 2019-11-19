@@ -50,6 +50,24 @@ describe('when user applies for a new loan', function () {
             expect(wrapper.queryByText('Amount cannot be empty.')).toBeVisible();
             expect(onApplySuccess).not.toHaveBeenCalled();
         });
+
+        it('should allow user to re-submit', function () {
+            API.applyNewLoan.mockResolvedValueOnce(true);
+
+            let wrapper = renderWithUserContext(<NewLoanPage onSuccess={onApplySuccess} />, { user: new User("johndoe", jwt) });
+            fireEvent.change(wrapper.getByLabelText('Amount'), { target: { value: '' } });
+            fireEvent.change(wrapper.getByLabelText('Duration'), { target: { value: '3' } });
+            fireEvent.click(wrapper.getByText('Apply'));
+            expect(wrapper.queryByText('Amount cannot be empty.')).toBeVisible();
+
+            fireEvent.change(wrapper.getByLabelText('Amount'), { target: { value: '100' } });
+            fireEvent.click(wrapper.getByText('Apply'));
+
+            return wait(() => expect(API.applyNewLoan).toHaveBeenCalled())
+                .then(() => {
+                    expect(onApplySuccess).toHaveBeenCalled();
+                });
+        });
     });
 
     describe('with API returning error', function () {
