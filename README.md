@@ -13,6 +13,12 @@ Backend application, exposes api for taking a loan.
 ### db
 Database module, used by docker
 
+### loans-lah-app 
+BFF for loans-lah backend services
+
+### loans-lah-web
+UI for loans-lah
+
 ## Requirements
 `openjdk-11`
 
