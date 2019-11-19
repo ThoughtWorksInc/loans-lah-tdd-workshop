@@ -21,8 +21,8 @@ function RegisterPage({ onSuccess, onUserLoggedIn }) {
         return null;
     }
 
-    let usernameInput = "";
-    let passwordInput = "";
+    let usernameInput = {};
+    let passwordInput = {};
     function handleRegister(event) {
         event.preventDefault();
         let username = usernameInput.value;

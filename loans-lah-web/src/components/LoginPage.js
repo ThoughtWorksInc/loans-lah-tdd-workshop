@@ -21,8 +21,8 @@ function LoginPage({ onSuccess, onUserLoggedIn }) {
         return null;
     }
 
-    let usernameInput = "";
-    let passwordInput = "";
+    let usernameInput = {};
+    let passwordInput = {};
     function handleLogin(event) {
         event.preventDefault();
         let username = usernameInput.value;
