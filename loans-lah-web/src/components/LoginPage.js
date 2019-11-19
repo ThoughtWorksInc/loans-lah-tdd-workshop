@@ -14,7 +14,7 @@ const RegisterLink = styled.a `
  */
 function LoginPage({ onSuccess, onUserLoggedIn }) {
     const user = useContext(UserContext);
-    const [formErrors, setFormErrors] = useState([]);
+    const [formErrors, setFormErrors] = useState({});
 
     if (user.loggedIn) {
         onUserLoggedIn();
@@ -29,19 +29,19 @@ function LoginPage({ onSuccess, onUserLoggedIn }) {
         let password = passwordInput.value;
         return API.login(username, password)
             .then(jwt => {
-                setFormErrors([]);
+                setFormErrors({});
                 return onSuccess({ jwt, username });
             })
-            .catch(err => setFormErrors([err.toString()]));
+            .catch(err => setFormErrors({ api: err.toString() }));
     }
 
-    let alerts = '';
-    if (formErrors.length > 0) {
-        alerts = (<Alert variant="danger">Invalid username or password.</Alert>);
+    let alertForApiError = '';
+    if (formErrors.api) {
+        alertForApiError = (<Alert variant="danger">Invalid username or password.</Alert>);
     }
     return (
         <div>
-            {alerts}
+            {alertForApiError}
             <Form onSubmit={handleLogin}>
                 <Form.Group controlId="formUsername">
                     <Form.Label>Username</Form.Label>
