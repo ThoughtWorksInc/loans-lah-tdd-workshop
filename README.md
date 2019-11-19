@@ -15,8 +15,12 @@ Database module, used by docker
 
 ## Requirements
 `openjdk-11`
+
 `docker` latest version
+
 `docker-compose` [compatible](https://docs.docker.com/compose/compose-file/) with version 3.7 of compose files
+
+`Nodejs` version `12.x`
 
 ## How to test
 Run `./build.sh` from the main directory to build all modules
