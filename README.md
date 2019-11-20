@@ -32,8 +32,6 @@ UI for loans-lah
 Run `./build.sh` from the main directory to build all modules
 
 ## How to build & run
-Run `./build.sh` from the main directory to build all modules, next `docker-compose up --force-recreate` to run all of them.
+Run `./build.sh` from the main directory to build all modules
 
-Then, go to `loans-lah-web`, and run `npm start`
-
-
+Next, run `./start.sh` to run all of them.
