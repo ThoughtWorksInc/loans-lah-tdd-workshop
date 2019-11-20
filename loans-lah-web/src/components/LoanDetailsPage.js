@@ -33,7 +33,7 @@ function LoanDetailsPage({ loanId }) {
                     <dd className="col-sm-9">{loan.amount}</dd>
 
                     <dt className="col-sm-3">Duration</dt>
-                    <dd className="col-sm-9">{loan.durationInDays} day(s)</dd>
+                    <dd className="col-sm-9">{Math.ceil(loan.durationInDays / 30)} month(s)</dd>
 
                     <dt className="col-sm-3">Interest rate</dt>
                     <dd className="col-sm-9">{loan.interestRate}%</dd>

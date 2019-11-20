@@ -25,7 +25,7 @@ describe('when user access the details of a valid loan', function () {
                 expect(wrapper.queryByText("2019-01-01")).toBeVisible();
                 expect(wrapper.queryByText("210")).toBeVisible();
                 expect(wrapper.queryByText("10%")).toBeVisible();
-                expect(wrapper.queryByText("30 day(s)")).toBeVisible();
+                expect(wrapper.queryByText("1 month(s)")).toBeVisible();
             });
     });
 });
