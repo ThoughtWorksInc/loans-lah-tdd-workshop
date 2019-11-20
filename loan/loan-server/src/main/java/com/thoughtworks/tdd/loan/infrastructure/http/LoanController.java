@@ -20,7 +20,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/api/v1/accounts/{accountId}/loans")
 public class LoanController {
 
-  private static final int INTEREST_RATE = 10;
+  private static final int INTEREST_RATE = 20;
 
   @Autowired
   private LoanRepository loanRepository;

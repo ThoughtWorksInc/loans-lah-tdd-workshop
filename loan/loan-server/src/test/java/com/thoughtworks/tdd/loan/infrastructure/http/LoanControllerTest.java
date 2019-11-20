@@ -45,7 +45,7 @@ public class LoanControllerTest {
   private Long loanId = id();
   private LocalDate takenAt = LocalDate.now();
   private int durationInDays = 10;
-  private int interestRate = 10;
+  private int interestRate = 20;
   private int amount = 200;
 
   @Test

@@ -34,7 +34,7 @@ class LoanControllerIntegrationTest {
   private String account = uuid();
   private LocalDate takenAt = LocalDate.now();
   private int durationInDays = 10;
-  private int interestRate = 10;
+  private int interestRate = 20;
   private int amount = 200;
 
   @Test
@@ -77,7 +77,6 @@ class LoanControllerIntegrationTest {
 
     assertThat(response.getStatusCode()).isEqualTo(OK);
     assertThat(response.getBody()).hasSize(1);
-    System.out.println(response.getBody());
     assertThat(response.getBody()).hasOnlyOneElementSatisfying(loan ->
             assertThat(loan).isEqualToIgnoringGivenFields(new Loan(account, amount, takenAt, durationInDays, interestRate), "id"));
   }
