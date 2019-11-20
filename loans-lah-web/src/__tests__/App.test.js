@@ -133,7 +133,7 @@ describe('when user views details of a loan', function () {
                 history.push("/loans/1");
                 return wait(() => expect(API.getLoanById).toHaveBeenCalled());
             }).then(() => {
-                expect(wrapper.queryByText('30 day(s)')).toBeVisible();
+                expect(wrapper.queryByText('1 month(s)')).toBeVisible();
             });
     });
 });
