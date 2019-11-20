@@ -1,5 +1,7 @@
 #!/bin/bash
 
+docker-compose down --remove-orphans
+
 pushd ./credit-history; ./build.sh
 popd
 
