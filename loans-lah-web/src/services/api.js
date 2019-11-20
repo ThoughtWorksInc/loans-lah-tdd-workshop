@@ -68,6 +68,18 @@ const API = {
         }).then(checkStatus)
             .then(res => res.json())
             .then(data => data);
+    },
+    getLoanById({ jwt, id }) {
+        return fetch(`/api/loans/${id}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            }
+        }).then(checkStatus)
+            .then(res => res.json())
+            .then(data => data);
     }
 };
 
