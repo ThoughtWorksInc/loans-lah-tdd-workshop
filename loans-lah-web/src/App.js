@@ -34,7 +34,7 @@ function App() {
         sessionStorage.setItem("jwt", jwt);
         sessionStorage.setItem("loggedInUser", username);
         setUser(new User(username, jwt));
-        history.push("/");
+        history.push("/loans");
     }
 
     function handleRegisterSuccess() {
@@ -42,11 +42,19 @@ function App() {
     }
 
     function handleAlreadyLoggedInUser() {
-        history.push("/");
+        history.push("/loans");
     }
 
     function handleLoanCreated() {
         history.push('/loans')
+    }
+
+    function handleLogout() {
+        sessionStorage.removeItem("jwt");
+        sessionStorage.removeItem("loggedInUser");
+        setUser(GUEST_USER);
+        history.push("/login");
+        return null;
     }
 
     return (
@@ -74,6 +82,7 @@ function App() {
                         <AuthenticatedRoute exact path="/loans">
                             <LoansPage />
                         </AuthenticatedRoute>
+                        <AuthenticatedRoute exact path="/logout" render={handleLogout}/>
                     </Switch>
                 </MainContainer>
             </UserProvider>
