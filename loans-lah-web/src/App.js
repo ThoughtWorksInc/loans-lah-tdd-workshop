@@ -14,15 +14,13 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import NewLoanPage from "./components/NewLoanPage";
 import RegisterPage from "./components/RegisterPage";
 import LoansPage from "./components/LoansPage";
-import { createBrowserHistory } from "history";
 import LoanDetailsPage from "./components/LoanDetailsPage";
 
 const MainContainer = styled(Container)`
     margin-top: 1rem;
 `;
 
-function App() {
-    const history = createBrowserHistory();
+function App({ history }) {
     let defaultUser;
     if (sessionStorage.getItem("loggedInUser")) {
         defaultUser = new User(sessionStorage.getItem("loggedInUser"), sessionStorage.getItem("jwt"));

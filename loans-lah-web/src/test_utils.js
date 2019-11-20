@@ -7,5 +7,5 @@ export function renderWithUserContext(ui, {user = {}, ...options} = {}) {
         return <UserProvider value={user} {...props} />
     }
 
-    return render(ui, {wrapper: Wrapper, ...options})
+    return render(ui, {wrapper: Wrapper, ...options});
 }
