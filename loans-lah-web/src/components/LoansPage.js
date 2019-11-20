@@ -19,6 +19,7 @@ function LoansPage() {
                 <tr>
                     <th>ID</th>
                     <th>Amount</th>
+                    <th>Taken on</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,6 +27,7 @@ function LoansPage() {
                     return (<tr key={loan.id}>
                         <td>{loan.id}</td>
                         <td>{loan.amount}</td>
+                        <td>{loan.takenAt}</td>
                     </tr>);
                 })}
                 </tbody>

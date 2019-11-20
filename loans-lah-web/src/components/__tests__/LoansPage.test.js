@@ -13,8 +13,8 @@ describe('when user click Apply with valid form', function () {
     it('submits new loan and call onSuccess callback', function () {
         const jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";
         const loans = [
-            { id: 1, amount: 200 },
-            { id: 2, amount: 500 }
+            { id: 1, amount: 200, takenAt: '2019-01-01', totalOutstanding: 210, interestRate: 10, durationInDays: 30 },
+            { id: 2, amount: 500, takenAt: '2019-02-01', totalOutstanding: 510, interestRate: 10, durationInDays: 60 }
         ];
         API.getAllLoans.mockResolvedValueOnce(loans);
 
@@ -25,8 +25,10 @@ describe('when user click Apply with valid form', function () {
                 expect(API.getAllLoans.mock.calls[0][0]).toEqual({ jwt });
                 expect(wrapper.queryByText("1")).toBeVisible();
                 expect(wrapper.queryByText("200")).toBeVisible();
+                expect(wrapper.queryByText("2019-01-01")).toBeVisible();
                 expect(wrapper.queryByText("2")).toBeVisible();
                 expect(wrapper.queryByText("500")).toBeVisible();
+                expect(wrapper.queryByText("2019-02-01")).toBeVisible();
             });
     });
 });
