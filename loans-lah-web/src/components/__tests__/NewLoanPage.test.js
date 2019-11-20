@@ -28,13 +28,6 @@ describe('when user applies for a new loan', function () {
 
             return wait(() => expect(API.applyNewLoan).toHaveBeenCalled())
                 .then(() => {
-                    expect(API.applyNewLoan.mock.calls[0][0]).toEqual({
-                        jwt,
-                        loan: {
-                            amount: 100,
-                            duration: 3
-                        }
-                    });
                     expect(onApplySuccess).toHaveBeenCalled();
                 });
         });
