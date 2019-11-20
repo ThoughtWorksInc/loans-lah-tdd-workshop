@@ -19,6 +19,7 @@ function LoansPage() {
                 <tr>
                     <th>ID</th>
                     <th>Amount</th>
+                    <th>Outstanding</th>
                     <th>Taken on</th>
                 </tr>
                 </thead>
@@ -27,6 +28,7 @@ function LoansPage() {
                     return (<tr key={loan.id}>
                         <td><a href={`/loans/${loan.id}`}>{loan.id}</a></td>
                         <td>{loan.amount}</td>
+                        <td>{loan.totalOutstanding}</td>
                         <td>{loan.takenAt}</td>
                     </tr>);
                 })}

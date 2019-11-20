@@ -25,9 +25,11 @@ describe('when user click Apply with valid form', function () {
                 expect(API.getAllLoans.mock.calls[0][0]).toEqual({ jwt });
                 expect(wrapper.queryByText("1")).toBeVisible();
                 expect(wrapper.queryByText("200")).toBeVisible();
+                expect(wrapper.queryByText("210")).toBeVisible();
                 expect(wrapper.queryByText("2019-01-01")).toBeVisible();
                 expect(wrapper.queryByText("2")).toBeVisible();
                 expect(wrapper.queryByText("500")).toBeVisible();
+                expect(wrapper.queryByText("510")).toBeVisible();
                 expect(wrapper.queryByText("2019-02-01")).toBeVisible();
             });
     });
