@@ -25,7 +25,7 @@ function LoansPage() {
                 <tbody>
                 {loans.map(loan => {
                     return (<tr key={loan.id}>
-                        <td>{loan.id}</td>
+                        <td><a href={`/loans/${loan.id}`}>{loan.id}</a></td>
                         <td>{loan.amount}</td>
                         <td>{loan.takenAt}</td>
                     </tr>);

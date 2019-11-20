@@ -15,6 +15,7 @@ import NewLoanPage from "./components/NewLoanPage";
 import RegisterPage from "./components/RegisterPage";
 import LoansPage from "./components/LoansPage";
 import { createBrowserHistory } from "history";
+import LoanDetailsPage from "./components/LoanDetailsPage";
 
 const MainContainer = styled(Container)`
     margin-top: 1rem;
@@ -82,6 +83,9 @@ function App() {
                         <AuthenticatedRoute exact path="/loans">
                             <LoansPage />
                         </AuthenticatedRoute>
+                        <AuthenticatedRoute path="/loans/:loanId" render={({ match }) => {
+                            return <LoanDetailsPage loanId={match.params.loanId} /> ;
+                        }}/>
                         <AuthenticatedRoute exact path="/logout" render={handleLogout}/>
                     </Switch>
                 </MainContainer>
