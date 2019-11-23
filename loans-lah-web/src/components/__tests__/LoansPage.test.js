@@ -1,5 +1,5 @@
 import React from "react";
-import {cleanup, fireEvent, wait} from "@testing-library/react";
+import {cleanup, wait} from "@testing-library/react";
 import '@testing-library/jest-dom/extend-expect';
 import LoansPage from "../LoansPage";
 import API from "../../services/api";
@@ -9,8 +9,8 @@ import {renderWithUserContext} from "../../test_utils";
 API.getAllLoans = jest.fn();
 afterEach(cleanup);
 
-describe('when user click Apply with valid form', function () {
-    it('submits new loan and call onSuccess callback', function () {
+describe('when user opens', function () {
+    it('fetches all loans belong to the user', function () {
         const jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";
         const loans = [
             { id: 1, amount: 200, takenAt: '2019-01-01', totalOutstanding: 210, interestRate: 10, durationInDays: 30 },
