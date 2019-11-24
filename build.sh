@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 docker-compose down --remove-orphans
 
 pushd ./credit-history; ./build.sh
@@ -16,3 +18,5 @@ popd
 
 pushd ./loans-lah-web; npm i; npm test;
 popd
+
+docker-compose build
