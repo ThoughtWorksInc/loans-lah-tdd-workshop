@@ -1,6 +1,15 @@
 #!/bin/bash
 
-set -e
+function check_changes() {
+    local current_sha=`git rev-parse --short HEAD`
+    local remote_sha=`git rev-parse --short origin/master`
+    if [ "$current_sha" != "$remote_sha" ]; then
+        echo "New changes in master, current: $current_sha, remote: $remote_sha"
+        git --no-pager log --decorate=short --pretty=oneline "$current_sha"^.."$remote_sha"
+    fi
+}
+
+check_changes
 
 docker-compose down --remove-orphans
 
