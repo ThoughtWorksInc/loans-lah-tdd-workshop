@@ -30,7 +30,7 @@ function NewLoanPage({ onSuccess }) {
         }
 
         let amount = parseFloat(amounInput.value);
-        let duration = parseInt(durationInput.value);
+        let duration = parseInt(durationInput.value) * 30;
         return API.applyNewLoan({ jwt: user.jwt, loan: { amount, duration } })
             .then(result => {
                 setFormErrors({});
