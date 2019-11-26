@@ -19,6 +19,9 @@ BFF for loans-lah backend services
 ### loans-lah-web
 UI for loans-lah
 
+## Setup
+Setup for project for [IntelliJ](blob/master/doc/SETUP.md)
+
 ## Requirements
 `openjdk-11`
 
