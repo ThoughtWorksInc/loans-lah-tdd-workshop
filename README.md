@@ -20,7 +20,7 @@ BFF for loans-lah backend services
 UI for loans-lah
 
 ## Setup
-Setup for project for [IntelliJ](blob/master/doc/SETUP.md)
+Setup for project for [IntelliJ](https://github.com/ThoughtWorksInc/loans-lah-tdd-workshop/blob/master/doc/SETUP.md)
 
 ## Requirements
 `openjdk-11`
