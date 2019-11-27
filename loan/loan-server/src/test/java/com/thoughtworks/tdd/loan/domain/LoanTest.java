@@ -15,59 +15,53 @@ class LoanTest {
   @Test
   void shouldNotBeAbleToCreateLoanWithNegativeAmount() {
     assertThrows(IllegalArgumentException.class, () -> {
-      new Loan(Stubs.id(), Stubs.uuid(), -1, LocalDate.now(),  10, 10);
+      new Loan(Stubs.id(), Stubs.uuid(), -1, LocalDate.now(),  10);
     });
   }
 
   @Test
   void shouldNotBeAbleToCreateLoanWithNegativeDuration() {
     assertThrows(IllegalArgumentException.class, () -> {
-      new Loan(Stubs.id(), Stubs.uuid(), 10, LocalDate.now(),  -1, 10);
-    });
-  }
-
-  @Test
-  void shouldNotBeAbleToCreateLoanWithNegativeInterestRate() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new Loan(Stubs.id(), Stubs.uuid(), 10, LocalDate.now(),  10, -1);
+      new Loan(Stubs.id(), Stubs.uuid(), 10, LocalDate.now(),  -1);
     });
   }
 
   @Test
   void shouldNotBeAbleToCreateLoanWithoutAccountNumber() {
     assertThrows(NullPointerException.class, () -> {
-      new Loan(Stubs.id(), null, 10, LocalDate.now(),  10, 10);
+      new Loan(Stubs.id(), null, 10, LocalDate.now(),  10);
     });
   }
 
   @Test
   void shouldNotBeAbleToCreateLoanWithoutTakenAt() {
     assertThrows(NullPointerException.class, () -> {
-      new Loan(Stubs.id(), Stubs.uuid(), 10, null,  10, 10);
+      new Loan(Stubs.id(), Stubs.uuid(), 10, null,  10);
     });
   }
 
   @Test
-  void shouldCalculateTotalOutstandingToBeAmountPlusInterestAtProvidedRateIfTheLoanDurationIsLessThanAMonth() {
-    Loan tenDayLoan = new LoanBuilder().withAmount(100).withInterestRate(10).withDurationInDays(5).build();
-    assertThat(tenDayLoan.totalOutstanding()).isEqualTo(new BigDecimal("110.00"));
+  void shouldCalculateTotalOutstandingToBeAmountPlus20PercentIfTheLoanDurationIsLessThanAMonth() {
+    Loan loan = new LoanBuilder().withAmount(100).withDurationInDays(5).build();
 
-    Loan tenDayLoanAt20PercentInterest = new LoanBuilder().withAmount(100).withInterestRate(20).withDurationInDays(5).build();
-    assertThat(tenDayLoanAt20PercentInterest.totalOutstanding()).isEqualTo(new BigDecimal("120.00"));
+    assertThat(loan.totalOutstanding()).isEqualTo(new BigDecimal("120.00"));
+    assertThat(loan.getInterestRate()).isEqualTo(20);
   }
 
   @Test
   void shouldCalculateFlat15PercentInterestRateForALoanBetweenOneMonthAndSixMonths() {
-    Loan twoMonthLoan = new LoanBuilder().withAmount(100).withDurationInDays(60).build();
+    Loan loan = new LoanBuilder().withAmount(100).withDurationInDays(60).build();
 
-    assertThat(twoMonthLoan.totalOutstanding()).isEqualTo(new BigDecimal("115.00"));
+    assertThat(loan.totalOutstanding()).isEqualTo(new BigDecimal("115.00"));
+    assertThat(loan.getInterestRate()).isEqualTo(15);
   }
 
   @Test
   void shouldCalculateFlat5PercentInterestRateForALoanWithDurationMoreThanSixMonths() {
-    Loan veryLongLoan = new LoanBuilder().withAmount(100).withDurationInDays(300).build();
+    Loan loan = new LoanBuilder().withAmount(100).withDurationInDays(300).build();
 
-    assertThat(veryLongLoan.totalOutstanding()).isEqualTo(new BigDecimal("105.00"));
+    assertThat(loan.totalOutstanding()).isEqualTo(new BigDecimal("105.00"));
+    assertThat(loan.getInterestRate()).isEqualTo(5);
   }
 
 }

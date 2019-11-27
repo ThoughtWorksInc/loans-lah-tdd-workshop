@@ -39,30 +39,40 @@ public class Loan {
   private Loan() {
   }
 
-  public Loan(Long id, String account, int amount, LocalDate takenAt, int durationInDays, int interestRate) {
-    this(account, amount, takenAt, durationInDays, interestRate);
+  public Loan(Long id, String account, int amount, LocalDate takenAt, int durationInDays) {
+    this(account, amount, takenAt, durationInDays);
     this.id = id;
   }
 
-  public Loan(String account, int amount, LocalDate takenAt, int durationInDays, int interestRate) {
-    validateLoan(account, amount, takenAt, durationInDays, interestRate);
+  public Loan(String account, int amount, LocalDate takenAt, int durationInDays) {
+    validateLoan(account, amount, takenAt, durationInDays);
     this.account = account;
     this.amount = amount;
     this.takenAt = takenAt;
     this.durationInDays = durationInDays;
-    this.interestRate = interestRate;
+    this.interestRate = interestRateFromDuration(durationInDays);
   }
 
-  private void validateLoan(String account, int amount, LocalDate takenAt, int durationInDays, int interestRate) {
+  private int interestRateFromDuration(int durationInDays) {
+    if (durationInDays < 30) return 20;
+    if (durationInDays < 180) return 15;
+    return 5;
+  }
+
+  private void validateLoan(String account, int amount, LocalDate takenAt, int durationInDays) {
     Objects.requireNonNull(account, "account can not be null");
     Objects.requireNonNull(takenAt, "takenAt date can not be null");
-    if(amount < 0 || durationInDays < 0 || interestRate < 0) {
+    if(amount < 0 || durationInDays < 0) {
       throw new IllegalArgumentException("amount or duration or interest rate cannot be negative");
     }
   }
 
   public Long getId() {
     return id;
+  }
+
+  public int getInterestRate() {
+    return interestRate;
   }
 
   @Override
@@ -98,14 +108,8 @@ public class Loan {
   @JsonGetter("totalOutstanding")
   public BigDecimal totalOutstanding() {
     BigDecimal multiplicand = new BigDecimal(amount);
-    if (this.durationInDays < 30) {
-      BigDecimal interestRateFactor = getInterestRateFactor();
-      return interestRateFactor.multiply(multiplicand);
-    } else if (this.durationInDays < 180) {
-      return new BigDecimal("1.15").multiply(multiplicand);
-    } else {
-      return new BigDecimal("1.05").multiply(multiplicand);
-    }
+    BigDecimal interestRateFactor = getInterestRateFactor();
+    return interestRateFactor.multiply(multiplicand);
   }
 
   private BigDecimal getInterestRateFactor() {

@@ -9,10 +9,9 @@ public class LoanBuilder {
     int amount = 100;
     LocalDate startDate = LocalDate.now();
     int durationInDays = 10;
-    int interestRate = 20;
 
     public Loan build() {
-        return new Loan(account, amount, startDate, durationInDays, interestRate);
+        return new Loan(account, amount, startDate, durationInDays);
     }
 
     public LoanBuilder withAmount(int amount) {
@@ -22,11 +21,6 @@ public class LoanBuilder {
 
     public LoanBuilder withDurationInDays(int durationInDays) {
         this.durationInDays = durationInDays;
-        return this;
-    }
-
-    public LoanBuilder withInterestRate(int interestRate) {
-        this.interestRate = interestRate;
         return this;
     }
 

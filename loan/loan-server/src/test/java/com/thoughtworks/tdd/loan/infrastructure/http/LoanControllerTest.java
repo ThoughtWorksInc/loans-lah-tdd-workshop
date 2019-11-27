@@ -45,7 +45,6 @@ public class LoanControllerTest {
   private Long loanId = id();
   private LocalDate takenAt = LocalDate.now();
   private int durationInDays = 10;
-  private int interestRate = 20;
   private int amount = 200;
 
   @Test
@@ -68,7 +67,7 @@ public class LoanControllerTest {
 
   @Test
   void shouldReturnUserLoanById() {
-    Loan loan = new Loan(loanId, account, amount, takenAt, durationInDays, interestRate);
+    Loan loan = new Loan(loanId, account, amount, takenAt, durationInDays);
     when(loanRepository.findByIdAndAccount(loan.getId(), account)).thenReturn(Optional.of(loan));
 
     ResponseEntity<Loan> response = testRestTemplate.exchange(
@@ -100,8 +99,8 @@ public class LoanControllerTest {
 
   @Test
   void shouldRequestForANewLoan() {
-    Loan loan = new Loan(account, amount, takenAt, durationInDays, interestRate);
-    Loan persisted = new Loan(id(), account, amount, takenAt, durationInDays, interestRate);
+    Loan loan = new Loan(account, amount, takenAt, durationInDays);
+    Loan persisted = new Loan(id(), account, amount, takenAt, durationInDays);
     when(loanRepository.save(loan)).thenReturn(persisted);
 
     var loanRequest = "{\"amount\": 200, \"durationInDays\": 10}";

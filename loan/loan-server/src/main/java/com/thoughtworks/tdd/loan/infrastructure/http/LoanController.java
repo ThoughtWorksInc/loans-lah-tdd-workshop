@@ -20,8 +20,6 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/api/v1/accounts/{accountId}/loans")
 public class LoanController {
 
-  private static final int INTEREST_RATE = 20;
-
   @Autowired
   private LoanRepository loanRepository;
 
@@ -29,7 +27,7 @@ public class LoanController {
   public ResponseEntity<?> createNew(@PathVariable("accountId") String accountId,
                                               @RequestBody NewLoan newLoan) {
     try {
-      var loan = new Loan(accountId, newLoan.getAmount(), LocalDate.now(), newLoan.getDurationInDays(), INTEREST_RATE);
+      var loan = new Loan(accountId, newLoan.getAmount(), LocalDate.now(), newLoan.getDurationInDays());
       var saved = loanRepository.save(loan);
       var status = new LoanStatus("ok", format("/api/v1/accounts/%s/loans/%s", accountId, saved.getId()));
       return accepted().body(status);
