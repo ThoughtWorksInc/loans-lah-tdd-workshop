@@ -38,3 +38,6 @@ Run `./build.sh` from the main directory to build all modules
 Run `./build.sh` from the main directory to build all modules
 
 Next, run `./start.sh` to run all of them.
+
+## Troubleshooting
+In any case you'd like to clean docker containers and LoansLah docker's images run `./reset.sh`

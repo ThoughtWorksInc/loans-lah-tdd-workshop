@@ -9,7 +9,7 @@ function check_changes() {
     fi
 }
 
-check_changes
+# check_changes
 
 docker-compose down --remove-orphans
 
