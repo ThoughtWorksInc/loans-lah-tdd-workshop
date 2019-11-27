@@ -1,5 +1,6 @@
 package com.thoughtworks.tdd.loan.domain;
 
+import com.thoughtworks.tdd.loan.utils.LoanBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
-import static com.thoughtworks.tdd.loan.utils.Loans.loan;
 import static com.thoughtworks.tdd.loan.utils.Stubs.uuid;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +23,7 @@ class LoanRepositoryTest {
 
   @Test
   void shouldPersistNewLoan() {
-    Loan newLoan = loan();
+    Loan newLoan = new LoanBuilder().build();
     Loan saved = loanRepository.save(newLoan);
 
     List<Loan> loans = StreamSupport.stream(loanRepository.findAll().spliterator(), false).collect(toList());
@@ -40,9 +40,9 @@ class LoanRepositoryTest {
 
   @Test
   void shouldFindAllLoansAssignedToAccount() {
-    Loan newLoan = loan(account);
-    Loan anotherLoan = loan(account);
-    Loan someOtherLoan = loan(otherAccount);
+    Loan newLoan = new LoanBuilder().withAccount(account).build();
+    Loan anotherLoan = new LoanBuilder().withAccount(account).build();
+    Loan someOtherLoan = new LoanBuilder().withAccount(otherAccount).build();
     Loan newLoanSaved = loanRepository.save(newLoan);
     Loan anotherLoanSaved = loanRepository.save(anotherLoan);
     loanRepository.save(someOtherLoan);
@@ -54,8 +54,8 @@ class LoanRepositoryTest {
 
   @Test
   void shouldNotFindLoanWhenIdIsNotAssignedToAccount() {
-    Loan newLoan = loan(account);
-    Loan anotherLoan = loan(otherAccount);
+    Loan newLoan = new LoanBuilder().withAccount(account).build();
+    Loan anotherLoan = new LoanBuilder().withAccount(otherAccount).build();
     loanRepository.save(newLoan);
     Loan anotherLoanSaved = loanRepository.save(anotherLoan);
 
@@ -67,8 +67,8 @@ class LoanRepositoryTest {
 
   @Test
   void shouldFindLoanByIdAndAccount() {
-    Loan newLoan = loan(account);
-    Loan anotherLoan = loan(account);
+    Loan newLoan = new LoanBuilder().withAccount(account).build();
+    Loan anotherLoan = new LoanBuilder().withAccount(account).build();
     Loan newLoanSaved = loanRepository.save(newLoan);
     loanRepository.save(anotherLoan);
 

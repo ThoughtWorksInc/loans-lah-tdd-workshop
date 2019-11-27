@@ -2,6 +2,7 @@ package com.thoughtworks.tdd.loan.infrastructure.http;
 
 import com.thoughtworks.tdd.loan.domain.Loan;
 import com.thoughtworks.tdd.loan.domain.LoanRepository;
+import com.thoughtworks.tdd.loan.utils.LoanBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -18,7 +19,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.thoughtworks.tdd.loan.utils.Loans.loan;
 import static com.thoughtworks.tdd.loan.utils.Stubs.id;
 import static com.thoughtworks.tdd.loan.utils.Stubs.uuid;
 import static java.lang.String.format;
@@ -50,7 +50,7 @@ public class LoanControllerTest {
 
   @Test
   void shouldReturnAllUsersLoans() {
-    Loan loan = loan(account);
+      Loan loan = new LoanBuilder().withAccount(account).build();
     when(loanRepository.findAllByAccount(account)).thenReturn(List.of(loan));
 
     var responseType = new ParameterizedTypeReference<List<Loan>>() {

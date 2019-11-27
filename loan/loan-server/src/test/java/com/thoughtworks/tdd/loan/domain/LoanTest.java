@@ -1,9 +1,8 @@
 package com.thoughtworks.tdd.loan.domain;
 
-import com.thoughtworks.tdd.loan.utils.Loans;
+import com.thoughtworks.tdd.loan.utils.LoanBuilder;
 import com.thoughtworks.tdd.loan.utils.Stubs;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -50,23 +49,23 @@ class LoanTest {
 
   @Test
   void shouldCalculateTotalOutstandingToBeAmountPlusInterestAtProvidedRateIfTheLoanDurationIsLessThanAMonth() {
-    Loan tenDayLoan = Loans.loanStartingTodayWith10PercentInterest(100, 10);
+    Loan tenDayLoan = new LoanBuilder().withAmount(100).withInterestRate(10).withDurationInDays(5).build();
     assertThat(tenDayLoan.totalOutstanding()).isEqualTo(new BigDecimal("110.00"));
 
-    Loan tenDayLoanAt20PercentInterest = Loans.loanStartingTodayWithPercentInterest(100, 10, 20);
+    Loan tenDayLoanAt20PercentInterest = new LoanBuilder().withAmount(100).withInterestRate(20).withDurationInDays(5).build();
     assertThat(tenDayLoanAt20PercentInterest.totalOutstanding()).isEqualTo(new BigDecimal("120.00"));
   }
 
   @Test
   void shouldCalculateFlat15PercentInterestRateForALoanBetweenOneMonthAndSixMonths() {
-    Loan twoMonthLoan = Loans.twoMonthsLoanAt10PercentInterest(100);
+    Loan twoMonthLoan = new LoanBuilder().withAmount(100).withDurationInDays(60).build();
 
     assertThat(twoMonthLoan.totalOutstanding()).isEqualTo(new BigDecimal("115.00"));
   }
 
   @Test
   void shouldCalculateFlat5PercentInterestRateForALoanWithDurationMoreThanSixMonths() {
-    Loan veryLongLoan = Loans.loanAt10PercentInterestWithDuration(100, 300);
+    Loan veryLongLoan = new LoanBuilder().withAmount(100).withDurationInDays(300).build();
 
     assertThat(veryLongLoan.totalOutstanding()).isEqualTo(new BigDecimal("105.00"));
   }
