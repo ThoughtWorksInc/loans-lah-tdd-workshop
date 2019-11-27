@@ -55,7 +55,7 @@ public class Loan {
 
   private int interestRateFromDuration(int durationInDays) {
     if (durationInDays < 30) return 20;
-    if (durationInDays < 180) return 15;
+    if (durationInDays <= 180) return 15;
     return 5;
   }
 
