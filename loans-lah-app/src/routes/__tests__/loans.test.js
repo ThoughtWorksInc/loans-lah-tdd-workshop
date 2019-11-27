@@ -135,13 +135,13 @@ describe('loans api', () => {
   })
   describe('/loans/{id} details', () => {
     it('gets loan details', async () => {
-      const expectedResponse = { id: 1, amount: 200 }
+      const expectedResponse = { id: 2, amount: 200 }
       nock(process.env.LOAN_SERVER)
-        .get('/api/v1/accounts/1/loans/1')
+        .get('/api/v1/accounts/1/loans/2')
         .reply(200, expectedResponse)
 
       await supertest(app)
-        .get('/loans/1')
+        .get('/loans/2')
         .set('Authorization', `Bearer ${token}`)
         .set('Accept', 'application/json')
         .expect(200)

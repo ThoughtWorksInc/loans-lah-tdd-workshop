@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:loanId', async (req, res) => {
-  makeRequest(res, `${process.env.LOAN_SERVER}/api/v1/accounts/${req.params.loanId}/loans/${req.user.sub}`)
+  makeRequest(res, `${process.env.LOAN_SERVER}/api/v1/accounts/${req.user.sub}/loans/${req.params.loanId}`)
 })
 
 router.post('/', async (req, res) => {
