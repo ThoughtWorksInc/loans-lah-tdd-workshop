@@ -134,7 +134,7 @@ describe('loans api', () => {
     })
   })
   describe('/loans/{id} details', () => {
-    it('lists loans', async () => {
+    it('gets loan details', async () => {
       const expectedResponse = { id: 1, amount: 200 }
       nock(process.env.LOAN_SERVER)
         .get('/api/v1/accounts/1/loans/1')
