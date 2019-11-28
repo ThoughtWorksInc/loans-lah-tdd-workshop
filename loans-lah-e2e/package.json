@@ -1,0 +1,17 @@
+{
+  "name": "loans-lah-e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cy": "cypress open",
+    "test": "cypress run"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^3.7.0",
+    "mocha": "5.2.0",
+    "mochawesome": "^4.1.0"
+  }
+}

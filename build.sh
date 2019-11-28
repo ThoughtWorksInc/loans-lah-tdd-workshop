@@ -31,4 +31,7 @@ popd
 pushd ./loans-lah-web; npm i; npm test;
 popd
 
+pushd ./loans-lah-e2e; npm i;
+popd
+
 docker-compose build

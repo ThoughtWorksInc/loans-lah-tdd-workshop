@@ -19,6 +19,9 @@ BFF for loans-lah backend services
 ### loans-lah-web
 UI for loans-lah
 
+### loans-lah-e2e
+e2e test suite for loans-lah
+
 ## Setup
 Setup for project for [IntelliJ](https://github.com/ThoughtWorksInc/loans-lah-tdd-workshop/blob/master/doc/SETUP.md)
 
