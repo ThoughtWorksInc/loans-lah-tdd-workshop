@@ -65,7 +65,7 @@ class LoanTest {
   }
 
   @Test
-  void shouldCaluculateWithSetInterestFor30DayLoan() {
+  void shouldCalculateWithSetInterestFor30DayLoan() {
     Loan loan = new LoanBuilder().withAmount(100).withDurationInDays(30).build();
 
     assertThat(loan.totalOutstanding()).isEqualTo(new BigDecimal("120.00"));
@@ -73,11 +73,27 @@ class LoanTest {
   }
 
   @Test
-  void shouldCaluculateWith15PercentFor31DayLoan() {
+  void shouldCalculateWith15PercentFor31DayLoan() {
     Loan loan = new LoanBuilder().withAmount(100).withDurationInDays(31).build();
 
     assertThat(loan.totalOutstanding()).isEqualTo(new BigDecimal("115.00"));
     assertThat(loan.getInterestRate()).isEqualTo(15);
+  }
+
+  @Test
+  void shouldCalculateWith15PercentFor179DayLoan() {
+    Loan loan = new LoanBuilder().withAmount(100).withDurationInDays(179).build();
+
+    assertThat(loan.totalOutstanding()).isEqualTo(new BigDecimal("115.00"));
+    assertThat(loan.getInterestRate()).isEqualTo(15);
+  }
+
+  @Test
+  void shouldCalculateWith5PercentFor180DayLoan() {
+    Loan loan = new LoanBuilder().withAmount(100).withDurationInDays(180).build();
+
+    assertThat(loan.totalOutstanding()).isEqualTo(new BigDecimal("105.00"));
+    assertThat(loan.getInterestRate()).isEqualTo(5);
   }
 
 }
