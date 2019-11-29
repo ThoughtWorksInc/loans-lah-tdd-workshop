@@ -2,19 +2,18 @@ package com.thoughtworks.tdd.loan.infrastructure.http;
 
 import com.thoughtworks.tdd.loan.domain.Loan;
 import com.thoughtworks.tdd.loan.domain.LoanRepository;
+import com.thoughtworks.tdd.loan.mapper.LoanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static org.springframework.http.ResponseEntity.accepted;
-import static org.springframework.http.ResponseEntity.badRequest;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping("/api/v1/accounts/{accountId}/loans")
@@ -22,6 +21,9 @@ public class LoanController {
 
   @Autowired
   private LoanRepository loanRepository;
+
+  @Autowired
+  private LoanMapper loanMapper;
 
   @PostMapping
   public ResponseEntity<?> createNew(@PathVariable("accountId") String accountId,
@@ -37,16 +39,16 @@ public class LoanController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Loan>> getAll(@PathVariable("accountId") String accountId) {
-    var loans = loanRepository.findAllByAccount(accountId);
+  public ResponseEntity<List<LoanDetails>> getAll(@PathVariable("accountId") String accountId) {
+    var loans = loanRepository.findAllByAccount(accountId).stream().map(l -> loanMapper.map(l)).collect(Collectors.toList());
     return ok(loans);
   }
 
   @GetMapping
   @RequestMapping("/{loanId}")
-  public ResponseEntity<Loan> getLoan(@PathVariable("accountId") String accountId,
+  public ResponseEntity<LoanDetails> getLoan(@PathVariable("accountId") String accountId,
                                       @PathVariable("loanId") Long loanId) {
     var optionalLoan = loanRepository.findByIdAndAccount(loanId, accountId);
-    return optionalLoan.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    return optionalLoan.map(l -> ok(loanMapper.map(l))).orElse(ResponseEntity.notFound().build());
   }
 }

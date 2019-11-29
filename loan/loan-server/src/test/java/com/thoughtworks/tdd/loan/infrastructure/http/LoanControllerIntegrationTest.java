@@ -1,6 +1,5 @@
 package com.thoughtworks.tdd.loan.infrastructure.http;
 
-import com.thoughtworks.tdd.loan.domain.Loan;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -56,7 +56,7 @@ class LoanControllerIntegrationTest {
 
   @Test
   void shouldReturnAllLoansForAnAccount() {
-    var responseType = new ParameterizedTypeReference<List<Loan>>() {
+    var responseType = new ParameterizedTypeReference<List<LoanDetails>>() {
     };
     var loanRequest = "{\"amount\": 200, \"durationInDays\": 10}";
 
@@ -67,7 +67,7 @@ class LoanControllerIntegrationTest {
             LoanStatus.class,
             account);
 
-    ResponseEntity<List<Loan>> response = testRestTemplate.exchange(
+    ResponseEntity<List<LoanDetails>> response = testRestTemplate.exchange(
             "/api/v1/accounts/{account}/loans/",
             GET,
             EMPTY,
@@ -77,7 +77,7 @@ class LoanControllerIntegrationTest {
     assertThat(response.getStatusCode()).isEqualTo(OK);
     assertThat(response.getBody()).hasSize(1);
     assertThat(response.getBody()).hasOnlyOneElementSatisfying(loan ->
-            assertThat(loan).isEqualToIgnoringGivenFields(new Loan(account, amount, takenAt, durationInDays), "id"));
+            assertThat(loan).isEqualToIgnoringGivenFields(new LoanDetails(null, account, amount, 10, 20, new BigDecimal("240.00"), takenAt), "id"));
   }
 
 
@@ -95,11 +95,11 @@ class LoanControllerIntegrationTest {
     assertThat(response.getStatusCode()).isEqualTo(ACCEPTED);
     String url = response.getBody().getLocation().getUrl();
 
-    ResponseEntity<Loan> loanResponse = testRestTemplate.exchange(
+    ResponseEntity<LoanDetails> loanResponse = testRestTemplate.exchange(
             url,
             GET,
             EMPTY,
-            Loan.class);
+            LoanDetails.class);
 
     assertThat(loanResponse.getStatusCode()).isEqualTo(OK);
   }
