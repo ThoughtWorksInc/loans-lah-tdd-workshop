@@ -5,7 +5,7 @@
   "scripts": {
     "start": "babel-node ./src/app",
     "prod": "node ./bin/app",
-    "build": "babel src --out-dir build",
+    "build": "babel src --out-dir build && node ./src/scripts/git.js",
     "test": "jest"
   },
   "dependencies": {
@@ -19,7 +19,8 @@
     "node-fetch": "^2.6.0",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.19.0"
+    "sequelize": "^5.19.0",
+    "git-repo-info": "^2.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",

@@ -3,6 +3,7 @@ import logger from 'morgan'
 
 import usersRouter from './routes/users'
 import loansRouter from './routes/loans'
+import actuatorRouter from './routes/actuator'
 
 import jwt from 'express-jwt'
 
@@ -20,11 +21,13 @@ app.use(
   jwt({ secret: process.env.JWT_SECRET})
   .unless({ path: [
     { url: '/api/users', methods: ['POST'] },
-    { url: '/api/users/login', methods: ['POST'] }
+    { url: '/api/users/login', methods: ['POST'] },
+    { url: '/actuator/info', methods: ['GET'] }
   ]})
 )
 
 app.use('/api/users', usersRouter)
 app.use('/api/loans', loansRouter)
+app.use('/actuator', actuatorRouter)
 
 app.listen(3000, () => console.log(`Loan-lah app listening on port 3000!`))
