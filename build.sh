@@ -13,9 +13,6 @@ function check_changes() {
 
 docker-compose down --remove-orphans
 
-pushd ./credit-history; ./build.sh
-popd
-
 pushd ./loan; ./build.sh
 popd
 

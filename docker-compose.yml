@@ -6,13 +6,6 @@ services:
       context: ./db
     ports:
     - "5432:5432"
-  credit_history:
-    container_name: credit-history-lah
-    build:
-      context: ./credit-history/credit-history-server
-    ports:
-    - "8000:8080"
-    command: java -jar credit-history.jar
   loan:
     container_name: loan-lah
     build:
