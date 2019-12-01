@@ -16,9 +16,6 @@ docker-compose down --remove-orphans
 pushd ./loan; ./build.sh
 popd
 
-pushd ./payment; ./build.sh
-popd
-
 pushd ./loans-lah-app; npm i; npm test; npm run build;
 popd
 
