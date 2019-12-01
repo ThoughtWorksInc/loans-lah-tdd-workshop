@@ -1,6 +1,6 @@
 #!/bin/bash
 
-readonly containers=$(docker ps -qa)
+readonly containers=$(docker ps -a | grep loans | awk '{print $1}')
 readonly images=$(docker images -q | grep loan)
 
 if [[ -n "$containers" ]]; then
