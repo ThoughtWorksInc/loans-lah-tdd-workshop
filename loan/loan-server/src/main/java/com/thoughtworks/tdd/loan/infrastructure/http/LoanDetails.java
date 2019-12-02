@@ -1,10 +1,7 @@
 package com.thoughtworks.tdd.loan.infrastructure.http;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class LoanDetails {
     private Long id;
@@ -14,11 +11,12 @@ public class LoanDetails {
     private int interestRate;
     private BigDecimal totalOutstanding;
     private LocalDate takenAt;
+    private String type;
 
     public LoanDetails() {
     }
 
-    public LoanDetails(Long id, String account, int amount, int durationInDays, int interestRate, BigDecimal totalOutstanding, LocalDate takenAt) {
+    public LoanDetails(Long id, String account, int amount, int durationInDays, int interestRate, BigDecimal totalOutstanding, LocalDate takenAt, String type) {
         this.id = id;
         this.account = account;
         this.amount = amount;
@@ -26,6 +24,7 @@ public class LoanDetails {
         this.interestRate = interestRate;
         this.totalOutstanding = totalOutstanding;
         this.takenAt = takenAt;
+        this.type = type;
     }
 
     @Override
@@ -39,25 +38,6 @@ public class LoanDetails {
                 ", totalOutstanding=" + totalOutstanding +
                 ", takenAt=" + takenAt +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LoanDetails that = (LoanDetails) o;
-        return amount == that.amount &&
-                durationInDays == that.durationInDays &&
-                interestRate == that.interestRate &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(account, that.account) &&
-                Objects.equals(totalOutstanding, that.totalOutstanding) &&
-                Objects.equals(takenAt, that.takenAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, account, amount, durationInDays, interestRate, totalOutstanding, takenAt);
     }
 
     public Long getId() {
@@ -86,5 +66,9 @@ public class LoanDetails {
 
     public LocalDate getTakenAt() {
         return takenAt;
+    }
+
+    public String getType() {
+        return type;
     }
 }

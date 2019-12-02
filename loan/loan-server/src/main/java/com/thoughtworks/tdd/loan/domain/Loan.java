@@ -22,7 +22,11 @@ public class Loan {
     @Column
     private int interestRate;
 
-  private Loan() {
+    @Column
+    @Convert(converter = LoanTypeAttributeConvertor.class)
+    private LoanType type = new LoanType();
+
+    private Loan() {
   }
 
   public Loan(Long id, String account, int amount, LocalDate takenAt, int durationInDays) {
@@ -66,29 +70,31 @@ public class Loan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Loan loan = (Loan) o;
-        return durationInDays == loan.durationInDays &&
-                Objects.equals(interestRate, loan.interestRate) &&
+        return amount == loan.amount &&
+                durationInDays == loan.durationInDays &&
+                interestRate == loan.interestRate &&
                 Objects.equals(id, loan.id) &&
                 Objects.equals(account, loan.account) &&
-                Objects.equals(amount, loan.amount) &&
-                Objects.equals(takenAt, loan.takenAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, account, amount, takenAt, durationInDays, interestRate);
+                Objects.equals(takenAt, loan.takenAt) &&
+                Objects.equals(type, loan.type);
     }
 
     @Override
     public String toString() {
         return "Loan{" +
                 "id=" + id +
-                ", account=" + account +
+                ", account='" + account + '\'' +
                 ", amount=" + amount +
                 ", takenAt=" + takenAt +
                 ", durationInDays=" + durationInDays +
                 ", interestRate=" + interestRate +
+                ", type=" + type +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, account, amount, takenAt, durationInDays, interestRate, type);
     }
 
     public BigDecimal totalOutstanding() {
@@ -117,4 +123,8 @@ public class Loan {
   public int getDurationInDays() {
     return durationInDays;
   }
+
+    public LoanType getType() {
+        return this.type;
+    }
 }

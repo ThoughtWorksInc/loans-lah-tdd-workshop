@@ -1,5 +1,6 @@
 package com.thoughtworks.tdd.loan.infrastructure.http;
 
+import com.thoughtworks.tdd.loan.domain.Constants;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -77,7 +78,7 @@ class LoanControllerIntegrationTest {
     assertThat(response.getStatusCode()).isEqualTo(OK);
     assertThat(response.getBody()).hasSize(1);
     assertThat(response.getBody()).hasOnlyOneElementSatisfying(loan ->
-            assertThat(loan).isEqualToIgnoringGivenFields(new LoanDetails(null, account, amount, 10, 20, new BigDecimal("240.00"), takenAt), "id"));
+            assertThat(loan).isEqualToIgnoringGivenFields(new LoanDetails(null, account, amount, 10, 20, new BigDecimal("240.00"), takenAt, Constants.ONE_TIME_INTEREST), "id"));
   }
 
 

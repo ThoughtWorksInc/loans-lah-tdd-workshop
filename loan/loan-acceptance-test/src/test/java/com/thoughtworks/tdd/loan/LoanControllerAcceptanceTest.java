@@ -35,6 +35,7 @@ class LoanControllerAcceptanceTest {
             body("amount", equalTo(200)).
             body("interestRate", equalTo(20)).
             body("durationInDays", equalTo(10)).
-            body("totalOutstanding", equalTo(240.0F));
+            body("totalOutstanding", equalTo(240.0F)).
+            body("type", equalTo("ONE_TIME_INTEREST"));
   }
 }
