@@ -1,6 +1,9 @@
 package com.thoughtworks.tdd.loan.domain;
 
+import java.math.BigDecimal;
 import java.util.Objects;
+
+import static java.math.RoundingMode.HALF_UP;
 
 public class LoanType {
 
@@ -12,6 +15,17 @@ public class LoanType {
 
     public String getName() {
         return name;
+    }
+
+    public BigDecimal calculateIrAmount(int amount, int durationInDays) {
+        BigDecimal interestRateAsDecimal = new BigDecimal(interestRateFromDuration(durationInDays)).setScale(2, HALF_UP);
+        return new BigDecimal(amount).multiply(interestRateAsDecimal).divide(Constants.ONE_HUNDRED, HALF_UP);
+    }
+
+    int interestRateFromDuration(int durationInDays) {
+        if (durationInDays <= 30) return 20;
+        if (durationInDays < 180) return 15;
+        return 5;
     }
 
     @Override

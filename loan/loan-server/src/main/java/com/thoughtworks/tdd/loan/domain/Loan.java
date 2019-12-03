@@ -2,7 +2,6 @@ package com.thoughtworks.tdd.loan.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -27,12 +26,12 @@ public class Loan {
     private LoanType type = new LoanType();
 
     private Loan() {
-  }
+    }
 
-  public Loan(Long id, String account, int amount, LocalDate takenAt, int durationInDays) {
-    this(account, amount, takenAt, durationInDays);
-    this.id = id;
-  }
+    public Loan(Long id, String account, int amount, LocalDate takenAt, int durationInDays) {
+        this(account, amount, takenAt, durationInDays);
+        this.id = id;
+    }
 
     public Loan(String account, int amount, LocalDate takenAt, int durationInDays) {
         validateLoan(account, amount, takenAt, durationInDays);
@@ -40,13 +39,7 @@ public class Loan {
         this.amount = amount;
         this.takenAt = takenAt;
         this.durationInDays = durationInDays;
-        this.interestRate = interestRateFromDuration(durationInDays);
-    }
-
-    private int interestRateFromDuration(int durationInDays) {
-        if (durationInDays <= 30) return 20;
-        if (durationInDays < 180) return 15;
-        return 5;
+        this.interestRate = type.interestRateFromDuration(durationInDays);
     }
 
     private void validateLoan(String account, int amount, LocalDate takenAt, int durationInDays) {
@@ -63,6 +56,33 @@ public class Loan {
 
     public int getInterestRate() {
         return interestRate;
+    }
+
+    public BigDecimal totalOutstanding() {
+        BigDecimal principalAmount = new BigDecimal(amount);
+        BigDecimal interestAmount = type.calculateIrAmount(amount, durationInDays);
+        return principalAmount.add(interestAmount);
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+
+    public LocalDate getTakenAt() {
+        return takenAt;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public int getDurationInDays() {
+        return durationInDays;
+    }
+
+    public LoanType getType() {
+        return this.type;
     }
 
     @Override
@@ -95,36 +115,5 @@ public class Loan {
     @Override
     public int hashCode() {
         return Objects.hash(id, account, amount, takenAt, durationInDays, interestRate, type);
-    }
-
-    public BigDecimal totalOutstanding() {
-        BigDecimal multiplicand = new BigDecimal(amount);
-        BigDecimal interestRateFactor = getInterestRateFactor();
-        return interestRateFactor.multiply(multiplicand);
-    }
-
-    private BigDecimal getInterestRateFactor() {
-        return BigDecimal.ONE.add(new BigDecimal(interestRate).setScale(2, RoundingMode.HALF_UP).divide(new BigDecimal("100.00"), RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP));
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-
-    public LocalDate getTakenAt() {
-        return takenAt;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-  public int getDurationInDays() {
-    return durationInDays;
-  }
-
-    public LoanType getType() {
-        return this.type;
     }
 }
