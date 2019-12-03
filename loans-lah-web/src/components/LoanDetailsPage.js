@@ -40,6 +40,9 @@ function LoanDetailsPage({ loanId }) {
 
                     <dt className="col-sm-3">Outstanding amount</dt>
                     <dd className="col-sm-9">{loan.totalOutstanding}</dd>
+
+                    <dt className="col-sm-3">Loan type</dt>
+                    <dd className="col-sm-9">{loan.type}</dd>
                 </dl>
             </div>
         );

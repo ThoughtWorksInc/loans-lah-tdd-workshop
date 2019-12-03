@@ -44,5 +44,6 @@ describe('Loans Lah', function() {
     cy.contains('5%').should('be.visible');
     cy.contains('Outstanding amount').should('be.visible');
     cy.contains('1050').should('be.visible');
+    cy.contains('ONE_TIME_INTEREST').should('be.visible');
   });
 });

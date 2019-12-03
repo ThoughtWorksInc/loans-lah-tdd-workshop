@@ -12,7 +12,7 @@ afterEach(cleanup);
 describe('when user access the details of a valid loan', function () {
     it('fetches and displays the loan details', function () {
         const jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";
-        const loan = { id: 1, amount: 200, takenAt: '2019-01-01', totalOutstanding: 210, interestRate: 10, durationInDays: 30 };
+        const loan = { id: 1, amount: 200, takenAt: '2019-01-01', totalOutstanding: 210, interestRate: 10, durationInDays: 30, type: "ONE_TIME_INTEREST" };
         API.getLoanById.mockResolvedValueOnce(loan);
 
         let wrapper = renderWithUserContext(<LoanDetailsPage loanId="1" />, { user: new User("johndoe", jwt) });
@@ -26,6 +26,7 @@ describe('when user access the details of a valid loan', function () {
                 expect(wrapper.queryByText("210")).toBeVisible();
                 expect(wrapper.queryByText("10%")).toBeVisible();
                 expect(wrapper.queryByText("1 month(s)")).toBeVisible();
+                expect(wrapper.queryByText("ONE_TIME_INTEREST")).toBeVisible();
             });
     });
 });

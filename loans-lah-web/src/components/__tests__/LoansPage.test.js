@@ -13,8 +13,8 @@ describe('when user opens', function () {
     it('fetches all loans belong to the user', function () {
         const jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";
         const loans = [
-            { id: 1, amount: 200, takenAt: '2019-01-01', totalOutstanding: 210, interestRate: 10, durationInDays: 30 },
-            { id: 2, amount: 500, takenAt: '2019-02-01', totalOutstanding: 510, interestRate: 10, durationInDays: 60 }
+            { id: 1, amount: 200, takenAt: '2019-01-01', totalOutstanding: 210, interestRate: 10, durationInDays: 30, type: "TYPE1" },
+            { id: 2, amount: 500, takenAt: '2019-02-01', totalOutstanding: 510, interestRate: 10, durationInDays: 60, type: "TYPE2" }
         ];
         API.getAllLoans.mockResolvedValueOnce(loans);
 
@@ -27,10 +27,11 @@ describe('when user opens', function () {
                 expect(wrapper.queryByText("200")).toBeVisible();
                 expect(wrapper.queryByText("210")).toBeVisible();
                 expect(wrapper.queryByText("2019-01-01")).toBeVisible();
+                expect(wrapper.queryByText("TYPE1")).toBeVisible();
                 expect(wrapper.queryByText("2")).toBeVisible();
                 expect(wrapper.queryByText("500")).toBeVisible();
                 expect(wrapper.queryByText("510")).toBeVisible();
-                expect(wrapper.queryByText("2019-02-01")).toBeVisible();
+                expect(wrapper.queryByText("TYPE2")).toBeVisible();
             });
     });
 });

@@ -72,7 +72,8 @@ class LoanLahApiTest {
       then().
               statusCode(200).
               body("[0].amount", equalTo(100)).
-              body("[0].durationInDays", equalTo(10));
+              body("[0].durationInDays", equalTo(10)).
+              body("[0].type", equalTo("ONE_TIME_INTEREST"));
   }
 
   private static String extractJwt(ExtractableResponse<Response> loginResponse) {
