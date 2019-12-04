@@ -22,8 +22,8 @@ public class Loan {
     private int interestRate;
 
     @Column
-    @Convert(converter = LoanTypeAttributeConvertor.class)
-    private LoanType type = new LoanType();
+    @Convert(converter = LoanTypeAttributeConverter.class)
+    private LoanType type = new OneTimeInterestLoanType();
 
     private Loan() {
     }
@@ -60,14 +60,13 @@ public class Loan {
 
     public BigDecimal totalOutstanding() {
         BigDecimal principalAmount = new BigDecimal(amount);
-        BigDecimal interestAmount = type.calculateIrAmount(amount, durationInDays);
+        BigDecimal interestAmount = type.calculateTotalInterest(amount, durationInDays);
         return principalAmount.add(interestAmount);
     }
 
     public int getAmount() {
         return amount;
     }
-
 
     public LocalDate getTakenAt() {
         return takenAt;

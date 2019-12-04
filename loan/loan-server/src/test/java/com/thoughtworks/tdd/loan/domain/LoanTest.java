@@ -99,7 +99,6 @@ class LoanTest {
   @Test
   public void shouldDefaultTheLoanTypeToBeALegacyLoanType(){
     Loan loan = new LoanBuilder().withAmount(100).withDurationInDays(180).build();
-    assertThat(loan.getType()).isInstanceOf(LoanType.class);
+    assertThat(loan.getType()).isEqualTo(new OneTimeInterestLoanType());
   }
-
 }
