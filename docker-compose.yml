@@ -43,3 +43,9 @@ services:
       - LOAN_SERVER=http://loan-lah:8080
     depends_on:
       - app_db
+  paypay:
+    container_name: paypay
+    build:
+      context: ./thirdparty/PayPay
+    ports:
+      - "8888:80"
