@@ -16,7 +16,7 @@
     "express-jwt": "^5.3.1",
     "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.19.0",
